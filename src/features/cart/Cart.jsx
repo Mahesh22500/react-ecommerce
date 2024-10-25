@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import React from "react";
 import { useState } from "react";
 import {
@@ -8,36 +10,32 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+import { useDispatch, useSelector } from "react-redux";
+import { deleteItemFromCart, getItemsById } from "./cartApi";
+import { deleteItemFromCartAsync, getItemsByIdAsync, updateItemInCartAsync } from "./cartSlice";
 
 const Cart = () => {
   const [open, setOpen] = useState(true);
+  const loggedInUser = useSelector((state) => state.auth.loggedInUser);
+
+  const dispatch = useDispatch();
+
+const handleUpdateItem = (e,item)=>{
+
+    dispatch(updateItemInCartAsync({...item,quantity:e.target.value}))
+}
+
+
+  useEffect(() => {
+    console.log("Inside useEffect");
+    dispatch(getItemsByIdAsync(loggedInUser.id));
+  }, []);
+  const products = useSelector((state) => state.cart.items);
+
+  const handleRemoveItem = (itemId) => {
+    dispatch(deleteItemFromCartAsync(itemId));
+  };
+
   return (
     <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -53,7 +51,7 @@ const Cart = () => {
                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                   <img
                     alt={product.imageAlt}
-                    src={product.imageSrc}
+                    src={product.thumbnail}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
@@ -67,7 +65,7 @@ const Cart = () => {
                       <p className="ml-4">{product.price}</p>
                     </div>
                     <p className="mt-1 text-sm text-gray-500">
-                      {product.color}
+                      {product.brand}
                     </p>
                   </div>
                   <div className="flex flex-1 items-end justify-between text-sm">
@@ -78,7 +76,9 @@ const Cart = () => {
                       >
                         Qty
                       </label>
-                      <select>
+                      <select onChange = {
+                        (e)=> handleUpdateItem(e,product) 
+                      }>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -88,6 +88,7 @@ const Cart = () => {
 
                     <div className="flex">
                       <button
+                        onClick={() => handleRemoveItem(product.id)}
                         type="button"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
