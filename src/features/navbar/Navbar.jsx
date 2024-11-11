@@ -1,5 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 const user = {
   name: 'Tom Cook',
@@ -8,14 +9,17 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
+  { name: 'Dashboard', link: '/dashboard', role: "user" },
+  { name: 'Team', link: '/team', role: "user" },
+  { name: 'admin', link: '/admin', role: "admin" },
+  { name: 'orders', link: '/admin/orders', role: "admin" },
 
 ]
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Your Profile', href: '/profile' },
+  { name: 'Your Orders', href: '/orders' },
+  { name: 'Settings', href: '/settings' },
+  { name: 'Sign out', href: '/logout' },
 ]
 
 function classNames(...classes) {
@@ -23,6 +27,9 @@ function classNames(...classes) {
 }
 
 export default function Navbar({children}) {
+
+const user = useSelector(state=>state.auth.loggedInUser)
+
   return (
     <>
       {/*
@@ -50,19 +57,24 @@ export default function Navbar({children}) {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        aria-current={item.current ? 'page' : undefined}
-                        className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium',
-                        )}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                    {navigation.filter(item=>item.role === user.role).map((item) => (
+                      <Link
+                          key={item.name}
+                          to = {item.link}
+                          aria-current={item.current ? 'page' : undefined}
+                          className={classNames(
+                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                            'rounded-md px-3 py-2 text-sm font-medium',
+                          )}
+                        >
+                          {item.name}
+                        </Link>
+                        
+                      )
+                     
+                  )
+                    
+                    }
                   </div>
                 </div>
               </div>
@@ -94,12 +106,12 @@ export default function Navbar({children}) {
                     >
                       {userNavigation.map((item) => (
                         <MenuItem key={item.name}>
-                          <a
-                            href={item.href}
+                          <Link
+                            to={item.href}
                             className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         </MenuItem>
                       ))}
                     </MenuItems>

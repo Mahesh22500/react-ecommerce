@@ -1,16 +1,15 @@
 import { useSelector } from "react-redux";
 
 import {
+  deleteProductAsync,
   fetchAllProductsAsync,
-  fetchBrandsAsync,
-  fetchCategoriesAsync,
-  fetchPagedProducts,
   fetchProductsByFilterAsync,
-  sortProducts,
-} from "../productSlice";
+  fetchProductsByPageAsync,
+  fetchProductsBySortAsync,
+} from "../features/product-list/productSlice";
 import { useEffect } from "react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import {
   Dialog,
@@ -24,7 +23,11 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { StarIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  IdentificationIcon,
+  StarIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
   FunnelIcon,
@@ -35,25 +38,40 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/react/20/solid";
 import { useDispatch } from "react-redux";
-import { pageSize } from "../../../constants";
 
-export const Products = ({ page }) => {
+export const Products = () => {
   const products = useSelector((state) => state.product.products);
 
-  const getPagedProducts = (page) => {
-    const l = (page - 1) * pageSize;
-    const r = page * pageSize;
+  const dispatch = useDispatch();
+  
+  const [addProductMode, setAddProductMode] = useState(false);
 
-    const tot = products.length;
+  const [editableProduct, setEditableProduct] = useState(-1);
 
-    const pagedProducts = products.slice(l, Math.min(tot, r));
 
-    console.log("pagedProducts", pagedProducts);
-    return pagedProducts;
+  const handleEditProduct = (id) => {
+    // console.log("Edit product", id);
+    setEditableProduct(id);
   };
-  const pagedProducts = products ? getPagedProducts(page) : null;
 
-  // console.log("pagedProducts",pagedProducts)
+  const handleDeleteProduct = (id) => {
+    // console.log("Delete Product");
+    dispatch(deleteProductAsync(id))
+  };
+
+  const handleAddProduct = () => {
+    // console.log("Add product");
+
+    setAddProductMode(true);
+  };
+
+  if (editableProduct !== -1) {
+    return <Navigate to={`product-form/edit/${editableProduct}`}></Navigate>;
+  }
+
+  if (addProductMode) {
+    return <Navigate to="/admin/product-form/add"></Navigate>;
+  }
 
   return (
     <div>
@@ -62,38 +80,66 @@ export const Products = ({ page }) => {
       {/* Product List  */}
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+          <div
+            onClick={handleAddProduct}
+            className=" w-48 text-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-2  me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+          >
+            Add new Product
+          </div>
+
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {pagedProducts &&
-              pagedProducts.map((product) => (
+            {products && products.map((product) => (
+              <div>
                 <Link to={`/product-detail/${product.id}`}>
                   <div key={product.id} className="group relative">
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                       <img
+                        alt={product.imageAlt}
                         src={product.thumbnail}
                         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                       />
                     </div>
-                    <div className="mt-4 flex justify-between">
-                      <div>
-                        <h3 className="text-sm text-gray-700">
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-0"
-                          />
-                          {product.title}
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          <StarIcon className="w-6 h-6 inline"></StarIcon>
+                    <div className="text-sm text-gray-700 h-8 relative">
+                      <a href={product.href}>
+                        <span aria-hidden="true" className="" />
+                        {product.title}
+                      </a>
+                    </div>
+                    <div className=" mt-4 flex justify-between">
+                      <div className="flex  mt-1 text-sm text-gray-500">
+                        <StarIcon className="w-6 h-6 inline "></StarIcon>
+                        <div className="w-6 h-6 inline   text-base ">
                           {product.rating}
-                        </p>
+                        </div>
                       </div>
-                      <p className="text-sm font-medium text-gray-900">
-                        ${product.price}
-                      </p>
+
+                      {product.deleted ? (
+                        <div>deleted</div>
+                      ) : (
+                        <div className="mt-1 text-base text-gray-500">
+                          $ {product.price}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Link>
-              ))}
+
+                <div className="flex justify-between mt-2 ">
+                  <div
+                    onClick={() => handleEditProduct(product.id)}
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg px-2  me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  >
+                    Edit{" "}
+                  </div>
+                  <div
+                    onClick={()=>handleDeleteProduct(product.id)}
+                    className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg  px-2 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                  >
+                    Delete{" "}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -126,101 +172,147 @@ const sortOptions = [
   },
 ];
 
+const filters = [
+  {
+    id: "brand",
+    name: "Brands",
+    options: [
+      { label: "essence", value: "essence", checked: false },
+      { label: "glamour_beauty", value: "glamour_beauty", checked: false },
+      { label: "velvet_touch", value: "velvet_touch", checked: false },
+      { label: "chic_cosmetics", value: "chic_cosmetics", checked: false },
+      { label: "nail_couture", value: "nail_couture", checked: false },
+      { label: "calvin_klein", value: "calvin_klein", checked: false },
+      { label: "chanel", value: "chanel", checked: false },
+      { label: "dior", value: "dior", checked: false },
+      {
+        label: "dolce_& gabbana",
+        value: "dolce_& gabbana",
+        checked: false,
+      },
+      { label: "gucci", value: "gucci", checked: false },
+      {
+        label: "annibale_colombo",
+        value: "annibale_colombo",
+        checked: false,
+      },
+      { label: "furniture_co.", value: "furniture_co.", checked: false },
+      { label: "knoll", value: "knoll", checked: false },
+      { label: "bath_trends", value: "bath_trends", checked: false },
+      { label: "apple", value: "apple", checked: false },
+      { label: "asus", value: "asus", checked: false },
+      { label: "huawei", value: "huawei", checked: false },
+      { label: "lenovo", value: "lenovo", checked: false },
+      { label: "dell", value: "dell", checked: false },
+      { label: "fashion_trends", value: "fashion_trends", checked: false },
+      { label: "gigabyte", value: "gigabyte", checked: false },
+      { label: "classic_wear", value: "classic_wear", checked: false },
+      { label: "casual_comfort", value: "casual_comfort", checked: false },
+      { label: "urban_chic", value: "urban_chic", checked: false },
+      { label: "nike", value: "nike", checked: false },
+      { label: "puma", value: "puma", checked: false },
+      { label: "off_white", value: "off_white", checked: false },
+      {
+        label: "fashion_timepieces",
+        value: "fashion_timepieces",
+        checked: false,
+      },
+      { label: "longines", value: "longines", checked: false },
+      { label: "rolex", value: "rolex", checked: false },
+      { label: "amazon", value: "amazon", checked: false },
+    ],
+  },
+  {
+    id: "category",
+    name: "Category",
+    options: [
+      { label: "beauty", value: "beauty", checked: false },
+      { label: "fragrances", value: "fragrances", checked: false },
+      { label: "furniture", value: "furniture", checked: false },
+      { label: "groceries", value: "groceries", checked: false },
+      {
+        label: "home-decoration",
+        value: "home-decoration",
+        checked: false,
+      },
+      {
+        label: "kitchen-accessories",
+        value: "kitchen-accessories",
+        checked: false,
+      },
+      { label: "laptops", value: "laptops", checked: false },
+      { label: "mens-shirts", value: "mens-shirts", checked: false },
+      { label: "mens-shoes", value: "mens-shoes", checked: false },
+      { label: "mens-watches", value: "mens-watches", checked: false },
+      {
+        label: "mobile-accessories",
+        value: "mobile-accessories",
+        checked: false,
+      },
+    ],
+  },
+];
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const ProductList = () => {
-  const brands = useSelector((state) => state.product.brands);
-  const categories = useSelector((state) => state.product.categories);
-
-  const products = useSelector((state) => state.product.products);
-
-  const filters = [
-    {
-      id: "brand",
-      name: "Brands",
-      options: brands.map((brand) => ({
-        label: brand,
-        value: brand,
-        checked: false,
-      })),
-    },
-    {
-      id: "category",
-      name: "Category",
-      options: categories.map((category) => ({
-        label: category,
-        value: category,
-        checked: false,
-      })),
-    },
-  ];
-
+export const AdminProductList = () => {
   const [page, setPage] = useState(1);
+  const handlePagination = (e, page) => {
+    // console.log("page clicked", page);
+    setPage(page);
+  };
 
   useEffect(() => {
-    dispatch(fetchBrandsAsync());
-    dispatch(fetchCategoriesAsync());
+    dispatch(fetchProductsByPageAsync(page));
+  }, [page]);
 
-    dispatch(fetchAllProductsAsync());
-    setPage(1);
-  }, []);
+  const pages = new Array(10);
 
-  let pages;
-  const dispatch = useDispatch();
+  for (let i = 0; i < 10; i++) pages[i] = i + 1;
 
-  if (products) {
-    console.log("products", products);
-
-    const totalProducts = products.length;
-
-    const pagesLen = Math.ceil(products.length / pageSize);
-
-    // console.log("pageLen", pagesLen);
-
-    pages = new Array(pagesLen);
-    for (let i = 0; i < pagesLen; i++) pages[i] = i + 1;
-  }
-
-  const [filter, setFilter] = useState({
-    brand: null,
-    category: null,
-  });
+  const [filter, setFilter] = useState([]);
 
   const handleSort = (e, option) => {
     // console.log("sort clicked");
 
     // console.log("option", option);
 
-    dispatch(sortProducts({ label: option.sort, order: option.order }));
-    setPage(1);
+    dispatch(
+      fetchProductsBySortAsync({ _sort: option.sort, _order: option.order })
+    );
   };
 
   const handleCheck = (e, section, option) => {
+    // // console.log("section",section);
+    // // console.log("option",option);
     if (e.target.checked) {
-      // console.log("section id", section.id);
-      // console.log("option label", option.label);
-      filter[section.id] = option.label;
+      filter.push({
+        type: section.id,
+        value: option.label,
+      });
       // console.log(filter);
       setFilter(filter);
       dispatch(fetchProductsByFilterAsync(filter));
-      setPage(1);
     } else {
-      filter[section.id] = null;
-      dispatch(fetchProductsByFilterAsync(filter));
-      setPage(1);
+      const newFilter = filter.filter((filter) => {
+        if (filter.type === section.id && filter.value === option.label)
+          return false;
+        else return true;
+      });
+      // console.log(newFilter);
+      setFilter(newFilter);
+      dispatch(fetchProductsByFilterAsync(newFilter));
     }
   };
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
   useEffect(function () {
     dispatch(fetchAllProductsAsync());
   }, []);
-
-  const handlePagination = (page) => {
-    setPage(page);
-  };
 
   return (
     <div className="bg-white">
@@ -290,10 +382,8 @@ export const ProductList = () => {
                           <div key={option.value} className="flex items-center">
                             <input
                               onChange={(e) => handleCheck(e, section, option)}
-                              // defaultValue={option.value}
-                              // checked={filter[section.id] == option.value}
-                              checked={false}
-                              value={false}
+                              defaultValue={option.value}
+                              defaultChecked={option.checked}
                               id={`filter-mobile-${section.id}-${optionIdx}`}
                               name={`${section.id}[]`}
                               type="checkbox"
@@ -416,8 +506,8 @@ export const ProductList = () => {
                           <div key={option.value} className="flex items-center">
                             <input
                               onChange={(e) => handleCheck(e, section, option)}
-                              // value ={false}
-                              checked={filter[section.id] == option.label}
+                              defaultValue={option.value}
+                              defaultChecked={option.checked}
                               id={`filter-${section.id}-${optionIdx}`}
                               name={`${section.id}[]`}
                               type="checkbox"
@@ -438,9 +528,7 @@ export const ProductList = () => {
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3">
-                {<Products page={page}></Products>}
-              </div>
+              <div className="lg:col-span-3">{<Products></Products>}</div>
             </div>
           </section>
 
@@ -448,39 +536,26 @@ export const ProductList = () => {
 
           <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
             <div className="flex flex-1 justify-between sm:hidden">
-              <div
-                onClick={() => {
-                  if (page - 1 >= 1) setPage(page - 1);
-                }}
+              <a
+                href="#"
                 className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Previous
-              </div>
-              <div
-                onClick={() => {
-                  const pagesLen = Math.ceil(products.length / pageSize);
-                  console.log("next clicked", page);
-
-                  if (page + 1 <= pagesLen) setPage(page + 1);
-                }}
+              </a>
+              <a
+                href="#"
                 className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Next
-              </div>
+              </a>
             </div>
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm text-gray-700">
                   Showing{" "}
-                  <span className="font-medium">
-                    {(page - 1) * pageSize + 1}
-                  </span>{" "}
-                  to{" "}
-                  <span className="font-medium">
-                    {Math.min(products.length, page * pageSize)}
-                  </span>{" "}
-                  of <span className="font-medium">{products.length}</span>{" "}
-                  results
+                  <span className="font-medium">{(page - 1) * 10 + 1}</span> to{" "}
+                  <span className="font-medium">{page * 10}</span> of{" "}
+                  <span className="font-medium">100</span> results
                 </p>
               </div>
               <div>
@@ -488,45 +563,37 @@ export const ProductList = () => {
                   aria-label="Pagination"
                   className="isolate inline-flex -space-x-px rounded-md shadow-sm"
                 >
-                  <div
-                    onClick={() => {
-                      if (page - 1 >= 1) setPage(page - 1);
-                    }}
+                  <a
+                    href="#"
                     className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                   >
                     <span className="sr-only">Previous</span>
                     <ChevronLeftIcon aria-hidden="true" className="h-5 w-5" />
-                  </div>
+                  </a>
                   {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-                  {pages &&
-                    pages.map((pageIdx) => {
-                      return (
-                        <button
-                          onClick={() => handlePagination(pageIdx)}
-                          href="#"
-                          className={
-                            pageIdx == page
-                              ? "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset bg-blue-500 hover:bg-blue-500 focus:z-20 focus:outline-offset-0"
-                              : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                          }
-                          // className={`text-black`}
-                        >
-                          {pageIdx}
-                        </button>
-                      );
-                    })}
-                  <div
-                    onClick={() => {
-                      const pagesLen = Math.ceil(products.length / pageSize);
-                      console.log("next clicked", page);
-
-                      if (page + 1 <= pagesLen) setPage(page + 1);
-                    }}
+                  {pages.map((pageIdx) => {
+                    return (
+                      <button
+                        onClick={(e) => handlePagination(e, pageIdx)}
+                        href="#"
+                        className={
+                          pageIdx == page
+                            ? "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset bg-blue-500 hover:bg-blue-500 focus:z-20 focus:outline-offset-0"
+                            : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                        }
+                        // className={`text-black`}
+                      >
+                        {pageIdx}
+                      </button>
+                    );
+                  })}
+                  <a
+                    href="#"
                     className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                   >
                     <span className="sr-only">Next</span>
                     <ChevronRightIcon aria-hidden="true" className="h-5 w-5" />
-                  </div>
+                  </a>
                 </nav>
               </div>
             </div>

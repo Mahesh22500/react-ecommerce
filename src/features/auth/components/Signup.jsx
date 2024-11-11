@@ -2,8 +2,9 @@ import { useForm } from "react-hook-form";
 import { createUserAsync } from "../authSlice";
 
 import React from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLoggedInUserAsync } from "../../user/userSlice";
 const Signup = () => {
   const dispatch = useDispatch();
   const {
@@ -14,18 +15,27 @@ const Signup = () => {
   } = useForm();
 
   const handleSignUp = (data) => {
-    console.log("form data", data);
+    // console.log("form data", data);
 
     const userData = {
       email: data.email,
       password: data.password,
+      addresses:[],
+      role:"user"
     };
 
     dispatch(createUserAsync(userData));
   };
 
+  const loggedInUser = useSelector(state=>state.auth.loggedInUser)
+
+  if(loggedInUser){
+    dispatch(fetchLoggedInUserAsync(loggedInUser.id))
+  }
+
   return (
     <div>
+      { loggedInUser ? <Navigate to = "/"></Navigate> : null}
       <div>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -57,6 +67,7 @@ const Signup = () => {
                   <input
                     {...register("email", {
                       required: true,
+                      unique:true,
                       message: "email is required",
                     })}
                     id="email"

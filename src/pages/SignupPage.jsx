@@ -1,5 +1,6 @@
 import React from 'react'
 import Signup from '../features/auth/components/Signup'
+import Navbar from '../features/navbar/Navbar'
 
 
 
@@ -7,6 +8,7 @@ import Signup from '../features/auth/components/Signup'
 const SignupPage = () => {
   return (
     <div>
+      {/* <Navbar></Navbar> */}
       <Signup></Signup>
     </div>
   )

@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchProductByIdAsync } from "../productSlice";
+import { fetchProductByIdAsync } from "../features/product-list/productSlice";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 
-import { addItemToCartAsync } from "../../cart/cartSlice";
+import { addItemToCartAsync } from "../features/cart/cartSlice";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -18,7 +18,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductDetail() {
+export default function AdminProductDetail() {
   const { id } = useParams();
 
   // console.log("productId", id);
@@ -30,21 +30,18 @@ export default function ProductDetail() {
   }, []);
 
   const product = useSelector((state) => state.product.selectedProduct);
-
-  const items = useSelector((state) => state.cart.items);
-
   // // console.log("product1",product);
   const user = useSelector((state) => state.user.loggedInUser);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-
-    if (items.find((item) => item.product.id == product.id)) {
-      alert("Product already added to cart");
-      return;
-    }
-
-    const item = { product: product.id, user: user.id, quantity: 1 };
+    const productDetails = {
+      name: product.name,
+      price: product.price,
+      brand: product.brand,
+      thumbnail: product.thumbnail,
+    };
+    const item = { ...productDetails, user: user.id, quantity: 1 };
 
     dispatch(addItemToCartAsync(item));
   };
@@ -302,7 +299,7 @@ export default function ProductDetail() {
               </div>
 
               <button
-                onClick={handleAddToCart}
+                onClick={(e) => handleAddToCart(e)}
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Add to Cart

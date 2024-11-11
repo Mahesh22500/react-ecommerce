@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { fetchLoggedInUserAsync, loginUser } from "../../user/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -19,19 +20,25 @@ const Login = () => {
   } = useForm();
 
   const handleLogin = (loginData) => {
-    console.log("loginData", loginData);
+    // console.log("loginData", loginData);
     dispatch(loginUserAsync(loginData));
-    <Navigate to="/"></Navigate>;
+
+
+    // // console.log("After login");
+    
+  
   };
 
   const loggedInUser = useSelector((state) => state.auth.loggedInUser);
-  console.log("loggedInUser", loggedInUser);
 
-
+  if(loggedInUser){
+    dispatch(fetchLoggedInUserAsync(loggedInUser.id))
+  }
+  // console.log("loggedInUser", loggedInUser);
 
   return (
     <div>
-      { loggedInUser ? <Navigate to = "/"></Navigate> : null}
+      {loggedInUser ? <Navigate to = "/"></Navigate> : null}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -62,13 +69,14 @@ const Login = () => {
                 <input
                   {...register("email", {
                     required: true,
+                    unique: true,
                     message: "email is required",
                   })}
                   id="email"
                   name="email"
                   type="email"
                   required
-                  autoComplete="email"
+                  autoComplete="admin@xyz"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>

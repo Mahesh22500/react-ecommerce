@@ -5,7 +5,7 @@
       "title": "Essence Mascara Lash Princess",
       "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
       "category": "beauty",
-      "price": 9.99,
+      "price": "10.99",
       "discountPercentage": 7.17,
       "rating": 4.94,
       "stock": 5,
@@ -58,7 +58,8 @@
       "images": [
         "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
       ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png"
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "deleted": true
     },
     {
       "id": "2",
@@ -118,7 +119,8 @@
       "images": [
         "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/1.png"
       ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/thumbnail.png"
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/thumbnail.png",
+      "deleted": true
     },
     {
       "id": "3",
@@ -178,7 +180,8 @@
       "images": [
         "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/1.png"
       ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/thumbnail.png"
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/thumbnail.png",
+      "deleted": true
     },
     {
       "id": "4",
@@ -6017,23 +6020,169 @@
       "id": "ea45",
       "email": "abc@xyz",
       "password": "1111"
+    },
+    {
+      "id": "2a0e",
+      "title": "Essence Mascara Lash Princess",
+      "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+      "price": 9.99,
+      "discount": "",
+      "stock": 5,
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "brand": "Essence",
+      "category": "beauty",
+      "discountPercentage": 7.17
     }
   ],
   "users": [
     {
-      "id": "93a1",
+      "id": "be3d",
       "email": "abc@xyz",
-      "password": "1111"
+      "password": "1111",
+      "role": "user",
+      "addresses": [
+        {
+          "name": "Mahesh Singh",
+          "phone": "1234567890",
+          "email": "mahesh@gmail.com",
+          "streetAddress": "Satsang Vihar , Sakchi ",
+          "city": "Jamshedpur",
+          "state": "Jharkhand",
+          "pinCode": "12345"
+        },
+        {
+          "name": "Khushi ",
+          "phone": "1234567890",
+          "email": "khushi@gmail.com",
+          "streetAddress": "Satsang Vihar Sakchi",
+          "city": "Jamshedpur",
+          "state": "Jharkhand",
+          "pinCode": "12345"
+        },
+        {
+          "name": "mahesh11",
+          "phone": "mahesh11 no ",
+          "email": "mahesh11@gmail.com",
+          "streetAddress": "mahesh11 address",
+          "city": "mahesh11 city ",
+          "state": "mahesh11 state",
+          "pinCode": "mahesh11 postalCode"
+        }
+      ]
+    },
+    {
+      "id": "df52",
+      "email": "admin@xyz",
+      "password": "1111",
+      "addresses": [],
+      "role": "admin"
     }
   ],
   "cart": [
     {
-      "id": "577f",
+      "id": "69c1",
+      "price": 19.99,
+      "brand": "Glamour Beauty",
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/thumbnail.png",
+      "user": "93a1",
+      "quantity": 1
+    },
+    {
+      "id": "389b",
       "price": 9.99,
       "brand": "Essence",
       "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
-      "user": "93a1",
-      "quantity": "2"
+      "user": "8cbc",
+      "quantity": 1
+    },
+    {
+      "id": "ecdb",
+      "price": 9.99,
+      "brand": "Essence",
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "user": "be3d",
+      "quantity": 1
+    },
+    {
+      "id": "df39",
+      "price": "10.99",
+      "brand": "Essence",
+      "productId": "1",
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "user": "be3d",
+      "quantity": 1
+    },
+    {
+      "id": "0470",
+      "price": "10.99",
+      "brand": "Essence",
+      "productId": "1",
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "user": "be3d",
+      "quantity": 1
+    },
+    {
+      "id": "d7cd",
+      "price": "10.99",
+      "brand": "Essence",
+      "productId": "1",
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "user": "be3d",
+      "quantity": 1
+    }
+  ],
+  "orders": [
+    {
+      "id": "774a",
+      "products": [
+        {
+          "id": "9359",
+          "price": 9.99,
+          "brand": "Essence",
+          "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+          "user": "488c",
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "Mahesh",
+        "phone": "1234567890",
+        "email": "mahesh@gmail.com",
+        "streetAddress": "Satsang Vihar , Jsr ",
+        "city": "Jamsh",
+        "state": "Jharkhand",
+        "pinCode": ""
+      },
+      "paymentMethod": "cash",
+      "orderPlaced": false,
+      "orderStatus": "delivered",
+      "user": "488c"
+    },
+    {
+      "id": "98b9",
+      "products": [
+        {
+          "id": "6791",
+          "price": 9.99,
+          "brand": "Essence",
+          "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+          "user": "be3d",
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "Mahesh Singh",
+        "phone": "1234567890",
+        "email": "mahesh@gmail.com",
+        "streetAddress": "Satsang Vihar , Sakchi ",
+        "city": "Jamshedpur",
+        "state": "Jharkhand",
+        "pinCode": "12345"
+      },
+      "paymentMethod": "cash",
+      "orderPlaced": false,
+      "orderStatus": "Pending",
+      "user": "be3d"
     }
   ],
   "total": 194,

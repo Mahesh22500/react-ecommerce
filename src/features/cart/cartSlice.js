@@ -1,4 +1,4 @@
-
+import { resetCart } from "./cartApi";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addItemToCart,
@@ -24,7 +24,7 @@ export const getItemsByIdAsync = createAsyncThunk(
   "cart/getAllItemsById",
   async (userId) => {
     const items = await getItemsById(userId);
-    console.log("items received",items);
+    // console.log("items received",items);
     return items;
   }
 );
@@ -32,7 +32,7 @@ export const getItemsByIdAsync = createAsyncThunk(
 export const addItemToCartAsync = createAsyncThunk(
   "cart/addItemToCart",
   async (addItem) => {
-    console.log("addItem",addItem);
+    // console.log("addItem",addItem);
     const item = await addItemToCart(addItem);
     return item;
   }
@@ -48,23 +48,34 @@ export const deleteItemFromCartAsync = createAsyncThunk(
 
 export const updateItemInCartAsync = createAsyncThunk(
   "cart/updateItemInCart",
-  async (updateItem) => {
-    const items = await updateItemInCart(updateItem);
-    return items;
+  async ({id,update}) => {
+
+    const item = await updateItemInCart({id,update});
+  
+    return item;
   }
 );
+
+export const resetCartAsync = createAsyncThunk("cart/resetCart",
+  async (userId)=>{
+    const {message} = await resetCart(userId);
+    return message
+  }
+)
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducer: {},
+  reducer: {
+
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllItemsAsync.fulfilled, (state, action) => {
         state.items = action.payload;
       })
       .addCase(getItemsByIdAsync.fulfilled, (state, action) => {
-        console.log("action payload",action.payload);
+        // console.log("action payload",action.payload);
         state.items = action.payload;
       })
       .addCase(addItemToCartAsync.fulfilled, (state, action) => {
@@ -76,9 +87,14 @@ const cartSlice = createSlice({
         });
       })
       .addCase(updateItemInCartAsync.fulfilled, (state, action) => {
-        const index = state.items.find((item) => item.id === action.payload.id);
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        // console.log("index",index);
         state.items[index] = action.payload;
-      });
+      })
+      .addCase(resetCartAsync.fulfilled,(state,action)=>{
+        state.items = [];
+      })
+      ;
   },
 });
 

@@ -4,7 +4,7 @@ export const getAllItems = () => {
   return new Promise(async (resolve, reject) => {
     const response = await fetch(baseUrl);
 
-    const items = response.json();
+    const items = await response.json();
 
     resolve(items);
   });
@@ -12,15 +12,19 @@ export const getAllItems = () => {
 
 export const getItemsById = (userId) => {
   const queryUrl = baseUrl + "?user=" + userId;
-  console.log("queryUrl", queryUrl);
+  // console.log("queryUrl", queryUrl);
   return new Promise(async (resolve, reject) => {
     const response = await fetch(queryUrl);
 
-    const items = await response.json();
+    const data = await response.json();
 
-    console.log("items ", items);
+    if (response.ok) {
+      // console.log("items in api ", data);
 
-    resolve(items);
+      resolve(data);
+    } else {
+      reject(data);
+    }
   });
 };
 
@@ -29,42 +33,82 @@ export const addItemToCart = (itemData) => {
   return new Promise(async (resolve, reject) => {
     const response = await fetch(queryUrl, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(itemData),
     });
 
-    const item = response.json();
+    const data = await response.json();
 
-    resolve(item);
+    if (response.ok) {
+      resolve(data);
+    } else {
+      reject(data);
+    }
   });
 };
 
 export const deleteItemFromCart = (itemId) => {
   const queryUrl = baseUrl + "/" + itemId;
-  console.log("queryUrl", queryUrl);
+  // console.log("queryUrl", queryUrl);
   return new Promise(async (resolve, reject) => {
     const response = await fetch(queryUrl, {
+      headers: {
+        "Content-Type": "application/json",
+      },
       method: "DELETE",
     });
 
-    const deletedItem = response.json();
+    const data = await response.json();
 
-    resolve(deletedItem);
+    if (response.ok) {
+      resolve(data);
+    } else reject(data);
   });
 };
 
-export const updateItemInCart = (updateItem) => {
-  const queryUrl = baseUrl + "/" + updateItem.id;
+export const updateItemInCart = ({id,update}) => {
+  const queryUrl = baseUrl + "/" + id;
 
-  console.log("updateItem", updateItem);
+  // console.log("updateItem", update);
   return new Promise(async (resolve, reject) => {
     const response = await fetch(queryUrl, {
-      method: "PUT",
-      body: JSON.stringify(updateItem),
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(update),
     });
 
-    const updatedData = response.json();
-    console.log("updatedData", updatedData);
+    const data = await response.json();
 
-    resolve(updatedData);
+    if (response.ok) {
+      // console.log("updatedData", data);
+      resolve(data);
+    } else reject(data);
+  });
+};
+
+export const resetCart = (userId) => {
+  const queryUrl = baseUrl + "?user=" + userId;
+
+  return new Promise(async (resolve, reject) => {
+    const response = await fetch(queryUrl);
+
+    if (response.ok) {
+      const items = await response.json();
+
+      for (let item of items) {
+        // // console.log("item to be deleted",item.id);
+        const response = await deleteItemFromCart(item.id);
+      }
+
+      resolve({ message: "cart reset" });
+    } else {
+      const data = await response.json();
+
+      reject(data);
+    }
   });
 };

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 import React from "react";
 import { useState } from "react";
@@ -12,25 +13,30 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItemFromCart, getItemsById } from "./cartApi";
-import { deleteItemFromCartAsync, getItemsByIdAsync, updateItemInCartAsync } from "./cartSlice";
+import {
+  deleteItemFromCartAsync,
+  getItemsByIdAsync,
+  updateItemInCartAsync,
+} from "./cartSlice";
 
 const Cart = () => {
-  const [open, setOpen] = useState(true);
-  const loggedInUser = useSelector((state) => state.auth.loggedInUser);
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
 
   const dispatch = useDispatch();
 
-const handleUpdateItem = (e,item)=>{
+  const handleUpdateItem = (e, item) => {
+    dispatch(
+      updateItemInCartAsync({
+        id: item.id,
+        update: { quantity: e.target.value },
+      })
+    );
+  };
 
-    dispatch(updateItemInCartAsync({...item,quantity:e.target.value}))
-}
+  const items = useSelector((state) => state.cart.items);
 
+  // console.log("items in cart",items);
 
-  useEffect(() => {
-    console.log("Inside useEffect");
-    dispatch(getItemsByIdAsync(loggedInUser.id));
-  }, []);
-  const products = useSelector((state) => state.cart.items);
 
   const handleRemoveItem = (itemId) => {
     dispatch(deleteItemFromCartAsync(itemId));
@@ -46,12 +52,12 @@ const handleUpdateItem = (e,item)=>{
 
         <div className="flow-root">
           <ul role="list" className="-my-6 divide-y divide-gray-200">
-            {products.map((product) => (
-              <li key={product.id} className="flex py-6">
+            {/* {!items.length && <Navigate to="/"></Navigate>} */}
+            {items && items.map((item) => (
+              <li key={item.product.id} className="flex py-6">
                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                   <img
-                    alt={product.imageAlt}
-                    src={product.thumbnail}
+                    src={item.product.thumbnail}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
@@ -60,12 +66,12 @@ const handleUpdateItem = (e,item)=>{
                   <div>
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <h3>
-                        <a href={product.href}>{product.name}</a>
+                        <a href={item.product.href}>{item.product.title}</a>
                       </h3>
-                      <p className="ml-4">{product.price}</p>
+                      <p className="ml-4">{item.product.price}</p>
                     </div>
                     <p className="mt-1 text-sm text-gray-500">
-                      {product.brand}
+                      {item.product.brand}
                     </p>
                   </div>
                   <div className="flex flex-1 items-end justify-between text-sm">
@@ -76,9 +82,10 @@ const handleUpdateItem = (e,item)=>{
                       >
                         Qty
                       </label>
-                      <select onChange = {
-                        (e)=> handleUpdateItem(e,product) 
-                      }>
+                      <select
+                        value={item.quantity}
+                        onChange={(e) => handleUpdateItem(e, item)}
+                      >
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -88,7 +95,7 @@ const handleUpdateItem = (e,item)=>{
 
                     <div className="flex">
                       <button
-                        onClick={() => handleRemoveItem(product.id)}
+                        onClick={() => handleRemoveItem(item.id)}
                         type="button"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
@@ -125,7 +132,6 @@ const handleUpdateItem = (e,item)=>{
             <Link to="/">
               <button
                 type="button"
-                onClick={() => setOpen(false)}
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Continue Shopping

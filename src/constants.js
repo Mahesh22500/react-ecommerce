@@ -1,0 +1,9 @@
+import { fetchBrands, fetchCategories } from "./features/product-list/productApi"
+
+
+export const statusOptions = [ 
+    "pending", "dispatched","delivered","canceled"
+]
+
+
+export const pageSize = 2;
