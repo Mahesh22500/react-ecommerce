@@ -8,6 +8,8 @@ export const createOrder = (order) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+        
       },
       body: JSON.stringify(order),
     });
@@ -26,7 +28,13 @@ export const createOrder = (order) => {
 
 export const fetchAllOrders = () => {
   return new Promise(async (resolve, reject) => {
-    const response = await fetch(baseUrl);
+    const response = await fetch(baseUrl,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
     const data = await response.json();
 
     if (response.ok) {
@@ -48,6 +56,8 @@ export const updateOrder = ({id,update}) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
       body: JSON.stringify(update),
     });

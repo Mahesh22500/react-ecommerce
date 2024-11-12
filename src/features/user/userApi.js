@@ -3,7 +3,13 @@ const baseUrl = "http://localhost:2000/users";
 export const fetchLoggedInUser = (userId) => {
   return new Promise(async (resolve, reject) => {
     const queryUrl = baseUrl + "/" + userId;
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
 
     const data = await response.json();
 
@@ -21,7 +27,13 @@ export const fetchLoggedInUserOrders = (userId) => {
     const queryUrl = baseUrl + "?user=" + userId;
     // console.log("queryUrl", queryUrl);
 
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
 
     const data = await response.json();
 
@@ -38,6 +50,8 @@ export const updateUser = ({id,update}) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
       body: JSON.stringify(update),
     });
@@ -60,6 +74,8 @@ export const addAddressToUser = (userId, addresses) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
       body: JSON.stringify(addresses),
     });

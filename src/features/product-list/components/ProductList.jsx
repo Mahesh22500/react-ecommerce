@@ -36,9 +36,12 @@ import {
 } from "@heroicons/react/20/solid";
 import { useDispatch } from "react-redux";
 import { pageSize } from "../../../constants";
+import { userReducer } from "../../user/userSlice";
 
 export const Products = ({ page }) => {
-  const products = useSelector((state) => state.product.products);
+  const allProducts = useSelector((state) => state.product.products);
+  const user = useSelector(state=>state.user.loggedInUser);
+  const products = allProducts.filter(product=>!(user.role === 'user' && product.deleted))
 
   const getPagedProducts = (page) => {
     const l = (page - 1) * pageSize;
@@ -64,36 +67,45 @@ export const Products = ({ page }) => {
         <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {pagedProducts &&
-              pagedProducts.map((product) => (
-                <Link to={`/product-detail/${product.id}`}>
-                  <div key={product.id} className="group relative">
-                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                      <img
-                        src={product.thumbnail}
-                        className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                      />
-                    </div>
-                    <div className="mt-4 flex justify-between">
-                      <div>
-                        <h3 className="text-sm text-gray-700">
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-0"
-                          />
-                          {product.title}
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          <StarIcon className="w-6 h-6 inline"></StarIcon>
-                          {product.rating}
+              pagedProducts.map((product) => 
+                {
+                  if(product.deleted)
+                    return null;
+                  else 
+                  return(
+                    <Link to={`/product-detail/${product.id}`}>
+                    <div key={product.id} className="group relative">
+                      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                        <img
+                          src={product.thumbnail}
+                          className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                        />
+                      </div>
+                      <div className="mt-4 flex justify-between">
+                        <div>
+                          <h3 className="text-sm text-gray-700">
+                            <span
+                              aria-hidden="true"
+                              className="absolute inset-0"
+                            />
+                            {product.title}
+                          </h3>
+                          <p className="mt-1 text-sm text-gray-500">
+                            <StarIcon className="w-6 h-6 inline"></StarIcon>
+                            {product.rating}
+                          </p>
+                        </div>
+                        <p className="text-sm font-medium text-gray-900">
+                          ${product.price}
                         </p>
                       </div>
-                      <p className="text-sm font-medium text-gray-900">
-                        ${product.price}
-                      </p>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link> 
+
+                )
+                
+              })
+            }
           </div>
         </div>
       </div>

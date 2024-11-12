@@ -2,7 +2,13 @@ const baseUrl = "http://localhost:2000/cart";
 
 export const getAllItems = () => {
   return new Promise(async (resolve, reject) => {
-    const response = await fetch(baseUrl);
+    const response = await fetch(baseUrl,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
 
     const items = await response.json();
 
@@ -14,7 +20,13 @@ export const getItemsById = (userId) => {
   const queryUrl = baseUrl + "?user=" + userId;
   // console.log("queryUrl", queryUrl);
   return new Promise(async (resolve, reject) => {
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
 
     const data = await response.json();
 
@@ -35,6 +47,8 @@ export const addItemToCart = (itemData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
       body: JSON.stringify(itemData),
     });
@@ -56,6 +70,8 @@ export const deleteItemFromCart = (itemId) => {
     const response = await fetch(queryUrl, {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
       method: "DELETE",
     });
@@ -77,6 +93,8 @@ export const updateItemInCart = ({id,update}) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
       body: JSON.stringify(update),
     });
@@ -94,7 +112,13 @@ export const resetCart = (userId) => {
   const queryUrl = baseUrl + "?user=" + userId;
 
   return new Promise(async (resolve, reject) => {
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
 
     if (response.ok) {
       const items = await response.json();

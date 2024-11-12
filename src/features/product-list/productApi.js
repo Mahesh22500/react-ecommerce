@@ -1,8 +1,15 @@
 const baseUrl = "http://localhost:2000/products";
 
 export const fetchAllProducts = () => {
+  console.log("jwtToken", localStorage.getItem("jwtToken"));
+
   return new Promise(async function (resolve, reject) {
-    const response = await fetch("http://localhost:2000/products");
+    const response = await fetch("http://localhost:2000/products", {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+      },
+    });
 
     const productsData = await response.json();
 
@@ -12,8 +19,6 @@ export const fetchAllProducts = () => {
 
 export const fetchProductsByFilters = (filter) => {
   // filters
-
-
 
   return new Promise(async (resolve, reject) => {
     let queryString = "?";
@@ -30,7 +35,13 @@ export const fetchProductsByFilters = (filter) => {
     let queryUrl = "http://localhost:2000/products" + queryString;
     // console.log("queryUrl", queryUrl);
 
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+        
+      },
+    });
     const data = await response.json();
 
     // console.log("filtered data", data);
@@ -56,7 +67,13 @@ export const fetchProductsBySort = (sortOptions) => {
   // console.log("queryUrl", queryUrl);
 
   return new Promise(async (resolve, reject) => {
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
 
     const data = await response.json();
     if (response.ok) {
@@ -71,7 +88,14 @@ export const fetchProductsByPage = (page) => {
   // console.log(queryUrl);
 
   return new Promise(async (resolve, reject) => {
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+
+      },
+    });
     const data = await response.json();
     if (response.ok) resolve(data.data);
     else reject(data);
@@ -84,7 +108,13 @@ export const fetchProductById = (id) => {
   // console.log("queryUrl", queryUrl);
 
   return new Promise(async (resolve, reject) => {
-    const response = await fetch(queryUrl);
+    const response = await fetch(queryUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
+      },
+    });
     const data = await response.json();
 
     if (response.ok) {
@@ -142,6 +172,8 @@ export const createProduct = (product) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
       body: JSON.stringify(product),
     });
@@ -161,7 +193,10 @@ export const updateProduct = (product) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
+
       body: JSON.stringify(product),
     });
 
@@ -179,7 +214,10 @@ export const deleteProduct = (productId) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+
       },
+
       body: JSON.stringify({ deleted: true }),
     });
 

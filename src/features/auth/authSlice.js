@@ -29,32 +29,32 @@ export const loginUserAsync = createAsyncThunk(
   }
 );
 
-
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logOut: (state,action)=>{
+    logOut: (state, action) => {
       state.loggedInUser = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.loggedInUser = action.payload;
+        localStorage.setItem("jwtToken", (action.payload.token));
       })
       .addCase(loginUserAsync.fulfilled, (state, action) => {
-        
         // console.log("action payload",action.payload)
         state.loggedInUser = action.payload;
+        localStorage.setItem("jwtToken", (action.payload.token));
+
       })
-      .addCase(loginUserAsync.rejected,(state,action)=>{
+      .addCase(loginUserAsync.rejected, (state, action) => {
         // console.log("action error",action.error);
-      })
-      
+      });
   },
 });
 
 export const authReducer = authSlice.reducer;
 
-export const {logOut} = authSlice.actions;
+export const { logOut } = authSlice.actions;
