@@ -10,7 +10,7 @@ import {
 
 const initialState = {
   items: [],
-  status:"idle"
+  status: "idle",
 };
 
 export const getAllItemsAsync = createAsyncThunk(
@@ -49,93 +49,84 @@ export const deleteItemFromCartAsync = createAsyncThunk(
 
 export const updateItemInCartAsync = createAsyncThunk(
   "cart/updateItemInCart",
-  async ({id,update}) => {
+  async ({ id, update }) => {
+    const item = await updateItemInCart({ id, update });
 
-    const item = await updateItemInCart({id,update});
-  
     return item;
   }
 );
 
-export const resetCartAsync = createAsyncThunk("cart/resetCart",
-  async (userId)=>{
-    const {message} = await resetCart(userId);
-    return message
+export const resetCartAsync = createAsyncThunk(
+  "cart/resetCart",
+  async (userId) => {
+    const { message } = await resetCart(userId);
+    return message;
   }
-)
+);
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducer: {
-
-  },
+  reducer: {},
   extraReducers: (builder) => {
     builder
-    
-    .addCase(getAllItemsAsync.pending, (state, action) => {
-      state.status = 'loading'
-    })
+
+      .addCase(getAllItemsAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(getAllItemsAsync.fulfilled, (state, action) => {
         state.items = action.payload;
-        state.status = 'idle'
+        state.status = "idle";
       })
-      
+
       .addCase(getItemsByIdAsync.pending, (state, action) => {
         // console.log("action payload",action.payload);
-        state.status = 'loading'
+        state.status = "loading";
       })
       .addCase(getItemsByIdAsync.fulfilled, (state, action) => {
         // console.log("action payload",action.payload);
         state.items = action.payload;
+        state.status = "idle";
       })
-      
-      .addCase(addItemToCartAsync.pending, (state, action) => {
-        
-        state.status = 'loading'
 
+      .addCase(addItemToCartAsync.pending, (state, action) => {
+        state.status = "loading";
       })
       .addCase(addItemToCartAsync.fulfilled, (state, action) => {
         state.items.push(action.payload);
-        state.status = 'idle'
-
+        state.status = "idle";
       })
       .addCase(deleteItemFromCartAsync.pending, (state, action) => {
-        state.status = 'loading'
-        
+        state.status = "loading";
       })
 
       .addCase(deleteItemFromCartAsync.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => {
           return item.id !== action.payload.id;
         });
-        state.status = 'idle'
+        state.status = "idle";
       })
-      
+
       .addCase(updateItemInCartAsync.pending, (state, action) => {
-        state.status = 'loading'
-        
+        state.status = "loading";
       })
       .addCase(updateItemInCartAsync.fulfilled, (state, action) => {
-        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        const index = state.items.findIndex(
+          (item) => item.id === action.payload.id
+        );
         // console.log("index",index);
         state.items[index] = action.payload;
-        state.status = 'idle'
+        state.status = "idle";
+      })
 
+      .addCase(resetCartAsync.pending, (state, action) => {
+        state.status = "loading";
       })
-      
-      .addCase(resetCartAsync.pending,(state,action)=>{
-        state.status = 'loading'
-      })
-      .addCase(resetCartAsync.fulfilled,(state,action)=>{
+      .addCase(resetCartAsync.fulfilled, (state, action) => {
         state.items = [];
-        state.status = 'idle'
-
-      })
-      ;
+        state.status = "idle";
+      });
   },
 });
 
 export const cartReducer = cartSlice.reducer;
-
-
