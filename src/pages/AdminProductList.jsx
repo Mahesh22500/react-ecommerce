@@ -38,9 +38,13 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/react/20/solid";
 import { useDispatch } from "react-redux";
+import { RotatingLines } from "react-loader-spinner";
 
 export const Products = () => {
   const products = useSelector((state) => state.product.products);
+
+  const productsStatus = useSelector((state) => state.product.status);
+
 
   const dispatch = useDispatch();
   
@@ -75,6 +79,22 @@ export const Products = () => {
 
   return (
     <div>
+      {productsStatus == "loading" ? (
+        <div>
+          <RotatingLines
+            visible={true}
+            height="96"
+            width="96"
+            color="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        </div>
+      ) : null}
+
       {/* Category-Filters */}
 
       {/* Product List  */}

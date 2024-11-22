@@ -11,6 +11,7 @@ import { RadioGroup } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 
 import { addItemToCartAsync } from "../features/cart/cartSlice";
+import { RotatingLines } from "react-loader-spinner";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -30,6 +31,8 @@ export default function AdminProductDetail() {
   }, []);
 
   const product = useSelector((state) => state.product.selectedProduct);
+  const productStatus = useSelector((state) => state.product.status);
+
   // // console.log("product1",product);
   const user = useSelector((state) => state.user.loggedInUser);
 
@@ -55,6 +58,22 @@ export default function AdminProductDetail() {
 
   return (
     <div className="bg-white">
+      {productStatus == "loading" ? (
+        <div>
+          <RotatingLines
+            visible={true}
+            height="96"
+            width="96"
+            color="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        </div>
+      ) : null}
+
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol

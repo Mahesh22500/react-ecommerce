@@ -17,7 +17,6 @@ const Home = () => {
   useEffect(() => {
     // console.log("Inside useEffect");
     dispatch(fetchLoggedInUserAsync(loggedInUser.id))
-    dispatch(getItemsByIdAsync(loggedInUser.id));
   }, []);
   return (
     <div>

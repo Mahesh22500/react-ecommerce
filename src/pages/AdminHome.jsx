@@ -6,6 +6,7 @@ import { getItemsByIdAsync } from "../features/cart/cartSlice";
 import Navbar from "../features/navbar/Navbar";
 import { ProductList } from "../features/product-list/components/ProductList";
 import { AdminProductList } from "./AdminProductList";
+import { fetchLoggedInUserAsync } from "../features/user/userSlice";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,8 @@ const AdminHome = () => {
 
   useEffect(() => {
     // console.log("Inside useEffect");
-    dispatch(getItemsByIdAsync(loggedInUser.id));
+    dispatch(fetchLoggedInUserAsync(loggedInUser.id))
+    
   }, []);
   return (
     <div>

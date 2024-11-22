@@ -16,13 +16,12 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const navigation = [
-  { name: "admin", link: "/admin", role: "admin" },
-  { name: "orders", link: "/admin/orders", role: "admin" },
+  { name: "Admin", link: "/admin", role: "admin" },
+  { name: "Orders", link: "/admin/orders", role: "admin" },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "/profile" },
   { name: "Your Orders", href: "/orders" },
-  { name: "Settings", href: "/settings" },
   { name: "Sign out", href: "/logout" },
 ];
 

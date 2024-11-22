@@ -5,6 +5,7 @@ import {
   fetchAllOrdersAsync,
   updateOrderAsync,
 } from "../features/orders/orderSlice";
+import { RotatingLines } from "react-loader-spinner";
 
 const AdminOrders = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const AdminOrders = () => {
   const [editIndex, setEditIndex] = useState(-1);
 
   const orders = useSelector((state) => state.order.orders);
+  const ordersStatus  = useSelector(state=>state.order.status)
 
   const handleChangeStatus = (e) => {
     // console.log("status", e.target.value);
@@ -54,6 +56,22 @@ const AdminOrders = () => {
 
   return (
     <div className="relative overflow-x-auto">
+      {ordersStatus == "loading" ? (
+        <div>
+          <RotatingLines
+            visible={true}
+            height="96"
+            width="96"
+            color="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        </div>
+      ) : null}
+
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>

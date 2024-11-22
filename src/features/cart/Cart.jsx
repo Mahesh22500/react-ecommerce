@@ -22,7 +22,14 @@ import {
 } from "./cartSlice";
 
 const Cart = () => {
+
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
+
+  useEffect(()=>{
+
+    dispatch(getItemsByIdAsync(loggedInUser.id));
+
+  },[])
 
   const dispatch = useDispatch();
 
@@ -36,6 +43,7 @@ const Cart = () => {
   };
 
   const items = useSelector((state) => state.cart.items);
+  
 
   const itemsStatus = useSelector(state=>state.cart.status)
 
