@@ -5,14 +5,18 @@ import { useDispatch } from "react-redux";
 import { getItemsByIdAsync } from "../features/cart/cartSlice";
 import Navbar from "../features/navbar/Navbar";
 import { ProductList } from "../features/product-list/components/ProductList";
+import { fetchLoggedInUser } from "../features/user/userApi";
+import { fetchLoggedInUserAsync } from "../features/user/userSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
 
-  const loggedInUser = useSelector(state=>state.user.loggedInUser)
+  const loggedInUser = useSelector(state=>state.auth.loggedInUser)
+  console.log("loggedInUser ",loggedInUser)
 
   useEffect(() => {
     // console.log("Inside useEffect");
+    dispatch(fetchLoggedInUserAsync(loggedInUser.id))
     dispatch(getItemsByIdAsync(loggedInUser.id));
   }, []);
   return (

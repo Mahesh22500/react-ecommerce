@@ -1,10 +1,14 @@
-const baseUrl = "http://localhost:2000/products";
+import { BASE_URL } from "../../constants";
+
+
+const baseUrl =  BASE_URL + "/products";
 
 export const fetchAllProducts = () => {
   console.log("jwtToken", localStorage.getItem("jwtToken"));
+  const queryUrl  = baseUrl
 
   return new Promise(async function (resolve, reject) {
-    const response = await fetch("http://localhost:2000/products", {
+    const response = await fetch(queryUrl, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
@@ -32,7 +36,7 @@ export const fetchProductsByFilters = (filter) => {
       queryString += "brand=" + filter.brand;
     }
 
-    let queryUrl = "http://localhost:2000/products" + queryString;
+    let queryUrl = baseUrl + queryString;
     // console.log("queryUrl", queryUrl);
 
     const response = await fetch(queryUrl, {
@@ -62,7 +66,7 @@ export const fetchProductsBySort = (sortOptions) => {
 
   queryString = queryString.slice(0, queryString.length - 1);
 
-  let queryUrl = "http://localhost:2000/products" + queryString;
+  let queryUrl = baseUrl + queryString;
 
   // console.log("queryUrl", queryUrl);
 
@@ -103,7 +107,7 @@ export const fetchProductsByPage = (page) => {
 };
 
 export const fetchProductById = (id) => {
-  let queryUrl = "http://localhost:2000/products/" + id;
+  let queryUrl = baseUrl + '/' + id;
 
   // console.log("queryUrl", queryUrl);
 

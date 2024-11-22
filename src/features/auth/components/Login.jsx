@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import {RotatingLines} from 'react-loader-spinner'
 
 import { Navigate } from "react-router-dom";
 
@@ -23,22 +24,34 @@ const Login = () => {
     // console.log("loginData", loginData);
     dispatch(loginUserAsync(loginData));
 
-
     // // console.log("After login");
-    
-  
   };
 
   const loggedInUser = useSelector((state) => state.auth.loggedInUser);
 
-  if(loggedInUser){
-    dispatch(fetchLoggedInUserAsync(loggedInUser.id))
+  const loggedInStatus = useSelector((state) => state.auth.status);
+
+  if (loggedInUser) {
+    dispatch(fetchLoggedInUserAsync(loggedInUser.id));
   }
-  // console.log("loggedInUser", loggedInUser);
+  console.log("loggedInUser", loggedInUser);
 
   return (
     <div>
-      {loggedInUser ? <Navigate to = "/"></Navigate> : null}
+      {loggedInStatus == "loading" ? (
+        <RotatingLines
+          visible={true}
+          height="96"
+          width="96"
+          color="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          ariaLabel="rotating-lines-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      ) : null}
+      {loggedInUser ? <Navigate to="/"></Navigate> : null}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img

@@ -29,6 +29,18 @@ import AdminProductDetail from "./pages/AdminProductDetail.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import AdminOrders from "./pages/AdminOrders.jsx";
 import AdminOrdersPage from "./pages/AdminOrdersPage.jsx";
+import { transitions, positions, Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+
+const options = {
+  // you can also just use 'bottom center'
+  position: positions.BOTTOM_CENTER,
+  timeout: 5000,
+  offset: "30px",
+  // you can also just use 'scale'
+  transition: transitions.SCALE,
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -160,7 +172,9 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <AlertProvider template={AlertTemplate} {...options}>
+          <RouterProvider router={router} />
+        </AlertProvider>
       </Provider>
     </>
   );

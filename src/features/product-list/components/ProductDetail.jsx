@@ -11,6 +11,7 @@ import { RadioGroup } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 
 import { addItemToCartAsync } from "../../cart/cartSlice";
+import { useAlert } from "react-alert";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -36,17 +37,21 @@ export default function ProductDetail() {
   // // console.log("product1",product);
   const user = useSelector((state) => state.user.loggedInUser);
 
+  const alert = useAlert();
+
   const handleAddToCart = (e) => {
     e.preventDefault();
 
     if (items.find((item) => item.product.id == product.id)) {
-      alert("Product already added to cart");
+      alert.error("Product already added to cart");
       return;
     }
 
     const item = { product: product.id, user: user.id, quantity: 1 };
 
     dispatch(addItemToCartAsync(item));
+
+    alert.info("Product has been added to cart")
   };
 
   const [selectedColor, setSelectedColor] = useState(

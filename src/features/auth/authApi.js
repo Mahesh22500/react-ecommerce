@@ -1,9 +1,13 @@
-const baseUrl = "http://localhost:2000/auth";
+import { BASE_URL } from "../../constants";
+
+
+const baseUrl = BASE_URL + "/auth";
 
 export const createUser = (userData) => {
+  const queryUrl = baseUrl 
   return new Promise(async (resolve, reject) => {
     // console.log("userData", userData);
-    const response = await fetch("http://localhost:2000/auth/signup", {
+    const response = await fetch(queryUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

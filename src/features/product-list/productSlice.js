@@ -18,6 +18,7 @@ const initialState = {
   categories: [],
   selectedProduct: null,
   pagedProducts: [],
+  status: "idle",
 };
 
 export const fetchAllProductsAsync = createAsyncThunk(
@@ -114,7 +115,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     sortProducts: (state, action) => {
-      console.log("products in reducer sort",state.products);
+      console.log("products in reducer sort", state.products);
 
       const { label, order } = action.payload;
       if (order == "asc") {
@@ -123,30 +124,56 @@ const productSlice = createSlice({
         state.products.sort((p, q) => q[label] - p[label]);
       }
     },
-   
   },
 
   extraReducers: (builder) => {
     builder
+      .addCase(fetchAllProductsAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
         // // console.log("action.payload",action.payload)
-      console.log("products in extra reducer before",state.products);
-        
-        state.products = action.payload;
-      console.log("products in extra reducer after",state.products);
+        console.log("products in extra reducer before", state.products);
 
+        state.products = action.payload;
+        state.status = "idle";
+        console.log("products in extra reducer after", state.products);
       })
+
+      .addCase(fetchProductsByFilterAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
+
       .addCase(fetchProductsByFilterAsync.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.status = "idle";
       })
+
+      .addCase(fetchProductsBySortAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
+
       .addCase(fetchProductsBySortAsync.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.status = "idle";
       })
+
+      .addCase(fetchProductsByPageAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
+
       .addCase(fetchProductsByPageAsync.fulfilled, (state, action) => {
+        state.status = "idle";
         state.products = action.payload;
+      })
+
+      .addCase(fetchProductByIdAsync.pending, (state, action) => {
+        state.status = "loading";
+        // console.log("selectedProduct", action.payload);
       })
       .addCase(fetchProductByIdAsync.fulfilled, (state, action) => {
         state.selectedProduct = action.payload;
+        state.status = "idle";
         // console.log("selectedProduct", action.payload);
       })
       .addCase(fetchBrandsAsync.fulfilled, (state, action) => {
@@ -161,13 +188,18 @@ const productSlice = createSlice({
       .addCase(updateProductAsync.fulfilled, (state, action) => {
         state.selectedProduct = action.payload;
       })
+
+      .addCase(deleteProductAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(deleteProductAsync.fulfilled, (state, action) => {
         const id = action.payload.id;
         const index = state.products.findIndex((product) => product.id === id);
         state.products[index] = action.payload;
+        state.status = "idle";
       });
   },
 });
 
 export const productReducer = productSlice.reducer;
-export const { sortProducts  } = productSlice.actions;
+export const { sortProducts } = productSlice.actions;

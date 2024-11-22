@@ -1,4 +1,7 @@
-const baseUrl = "http://localhost:2000/orders";
+import { BASE_URL } from "../../constants";
+
+
+const baseUrl = BASE_URL +  "/orders";
 
 export const createOrder = (order) => {
   const queryUrl = baseUrl;

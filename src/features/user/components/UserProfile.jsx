@@ -18,6 +18,8 @@ const UserProfile = () => {
     formState: { errors },
   } = useForm();
 
+  const [editProfile, setEditProfile] = useState(false);
+
   const [updateEnabled, setUpdateEnabled] = useState(false);
   const [addEnabled, setAddEnabled] = useState(false);
   const [updateIndex, setUpdateIndex] = useState(null);
@@ -91,6 +93,16 @@ const UserProfile = () => {
     }
   };
 
+  const handleProfilePicture = (data) => {
+    dispatch(
+      updateUserAsync({
+        id: user.id,
+        update: data,
+      })
+    );
+    setEditProfile(false);
+  };
+
   const handleAddAddress = () => {
     setUpdateEnabled(false);
     setUpdateIndex(null);
@@ -112,6 +124,56 @@ const UserProfile = () => {
         {" "}
         {user.role === "admin" ? `Role : ${user.role}` : ""}
       </h1>
+
+      <div className="flex flex-col">
+        
+        <div className="flex">
+        <div
+          onClick={() => setEditProfile(true)}
+          className="mx-2 cursor-pointer px-2 text-white bg-blue-400 "
+        >
+          Edit Profile Picture
+        </div>
+
+        </div>
+        {editProfile && (
+          <div className="sm:col-span-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              ImageUrl
+            </label>
+            <div className="mt-2">
+              <input
+                {...register("imageUrl")}
+                id="imageUrl"
+                name="imageUrl"
+                type="imageUrl"
+                autoComplete="imageUrl"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+              
+            <div className="flex mt-2 ">
+              
+            <div
+                onClick={handleSubmit(handleProfilePicture)}
+                className="px-2 cursor-pointer text-white bg-blue-400"
+              >
+                Add
+              </div>
+              <div
+                onClick={()=>setEditProfile(false)}
+                className="px-2 mx-2 cursor-pointer text-white bg-blue-400"
+              >
+                Close
+              </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="border-b border-gray-900/10 pb-12">
         {userAddresses && userAddresses.length > 0 && (
@@ -204,6 +266,25 @@ const UserProfile = () => {
                             name="streetAddress"
                             id="streetAddress"
                             autoComplete="streetAddress"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-span-full">
+                        <label
+                          htmlFor="street-address"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Profile Picture
+                        </label>
+                        <div className="mt-2">
+                          <input
+                            {...register("imageUrl")}
+                            type="url"
+                            name="imageUrl"
+                            id="imageUrl"
+                            autoComplete="imageUrl"
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>

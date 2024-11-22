@@ -1,4 +1,7 @@
-const baseUrl = "http://localhost:2000/users";
+import { BASE_URL } from "../../constants";
+
+
+const baseUrl =  BASE_URL + "/users";
 
 export const fetchLoggedInUser = (userId) => {
   return new Promise(async (resolve, reject) => {
@@ -23,7 +26,7 @@ export const fetchLoggedInUser = (userId) => {
 
 export const fetchLoggedInUserOrders = (userId) => {
   return new Promise(async (resolve, reject) => {
-    const baseUrl = "http://localhost:2000/orders";
+    const baseUrl = BASE_URL +  "/orders";
     const queryUrl = baseUrl + "?user=" + userId;
     // console.log("queryUrl", queryUrl);
 

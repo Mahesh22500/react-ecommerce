@@ -1,4 +1,7 @@
-const baseUrl = "http://localhost:2000/cart";
+import { BASE_URL } from "../../constants";
+
+
+const baseUrl = BASE_URL + "/cart";
 
 export const getAllItems = () => {
   return new Promise(async (resolve, reject) => {

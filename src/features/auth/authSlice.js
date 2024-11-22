@@ -6,6 +6,7 @@ import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 
 const initialState = {
   loggedInUser: null,
+  status: "idle",
 };
 
 export const createUserAsync = createAsyncThunk(
@@ -39,15 +40,24 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      .addCase(createUserAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.loggedInUser = action.payload;
-        localStorage.setItem("jwtToken", (action.payload.token));
+        state.status = "idle";
+        localStorage.setItem("jwtToken", action.payload.token);
+      })
+
+      .addCase(loginUserAsync.pending, (state, action) => {
+        state.status = "loading";
       })
       .addCase(loginUserAsync.fulfilled, (state, action) => {
         // console.log("action payload",action.payload)
         state.loggedInUser = action.payload;
-        localStorage.setItem("jwtToken", (action.payload.token));
-
+        state.status = "idle";
+        localStorage.setItem("jwtToken", action.payload.token);
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
         // console.log("action error",action.error);
