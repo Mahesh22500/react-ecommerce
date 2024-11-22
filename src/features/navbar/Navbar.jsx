@@ -16,8 +16,6 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const navigation = [
-  { name: "Dashboard", link: "/dashboard", role: "user" },
-  { name: "Team", link: "/team", role: "user" },
   { name: "admin", link: "/admin", role: "admin" },
   { name: "orders", link: "/admin/orders", role: "admin" },
 ];

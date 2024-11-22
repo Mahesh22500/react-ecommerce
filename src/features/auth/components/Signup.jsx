@@ -66,9 +66,14 @@ const Signup = () => {
                 <div className="mt-2">
                   <input
                     {...register("email", {
-                      required: true,
-                      unique: true,
-                      message: "email is required",
+                      required: { value: true, message: "Email is required" },
+                      
+
+                      pattern: {
+                        value:
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                        message: "Invalid email",
+                      },
                     })}
                     id="email"
                     name="email"
@@ -78,6 +83,18 @@ const Signup = () => {
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
+                
+              {errors.email?.type === "required" && (
+                <div role="alert" className="text-red-700">
+                  {errors.email.message}
+                </div>
+              )}
+
+              {errors.email?.type === "pattern" && (
+                <div role="alert" className="text-red-700">
+                  {errors.email.message}
+                </div>
+              )}
               </div>
 
               <div>
@@ -100,8 +117,14 @@ const Signup = () => {
                 <div className="mt-2">
                   <input
                     {...register("password", {
-                      required: true,
-                      message: "password is required",
+                      required: {
+                        value:true,
+                        message:"Password is required"
+                      },
+                      minLength: {
+                        value: 8,
+                        message: "Password must contain minimum 8 characters",
+                      },
                     })}
                     id="password"
                     name="password"
@@ -111,6 +134,12 @@ const Signup = () => {
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
+                
+              {errors.password?.type === "minLength" && (
+                <div role="alert" className="text-red-700">
+                  {errors.password.message}
+                </div>
+              )}
               </div>
 
               <div>
@@ -122,28 +151,32 @@ const Signup = () => {
                     Confirm password
                   </label>
                   <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                      Forgot password?
-                    </a>
+                    
                   </div>
                 </div>
                 <div className="mt-2">
                   <input
-                    {...register("confirm-password", {
-                      required: true,
-                      message: "confirm-password is required",
+                    {...register("confirmPassword", {
+                      required: {
+                        value:true,
+                        message:"confirm password is required"
+                      },
+                      
                     })}
-                    id="confirm-password"
-                    name="confirm-password"
+                    id="confirmPassword"
+                    name="confirmPassword"
                     type="password"
                     required
                     autoComplete="current-password"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
+                
+              {errors.confirmPassword?.type === "minLength" && (
+                <div role="alert" className="text-red-700">
+                  {errors.confirmPassword.message}
+                </div>
+              )}
               </div>
 
               <div>

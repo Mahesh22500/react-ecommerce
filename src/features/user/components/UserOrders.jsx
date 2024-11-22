@@ -147,42 +147,62 @@ const UserOrders = () => {
       </div>
 
         <div className="mx-16">
-        <h2>
+
+        <div className='  px-2 text-white text-center h-10 py-2 bg-blue-400'>
                   Shipping Address
-                </h2>
-        <div className="mt-4 flex gap-x-4">
-                    {/* <input
-                      checked={idx == selectedAddress}
-                      onClick={handleSelectedAddress}
-                      name="address"
-                      type="radio"
-                      value={idx}
-                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    /> */}
-                    <div className="min-w-0 flex-auto">
-                      <p className="text-sm font-semibold leading-6 text-gray-900">
-                        Name:
-                        {userOrder.address.name}
-                      </p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                        Street:
-                        {userOrder.address.street}
-                      </p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                        PinCode: 
-                        {userOrder.address.pinCode}
-                      </p>
+                </div>
+        <li
+                
+                className="flex justify-between gap-x-6 px-20 py-5 border-solid border-2 border-gray-200"
+              >
+                <div className="flex gap-x-4 ">
+                  <div className="min-w-0 flex-auto">
+                    <p className="text-md font-semibold leading-6 text-gray-900">
+                      Name: {userOrder.address.name}
+                    </p>
+                    <p className="mt-1 truncate text-md leading-5 text-gray-500">
+                      Street: {userOrder.address.street}
+                    </p>
+                    <p className="mt-1 truncate text-md leading-5 text-gray-500">
+                      PinCode: {userOrder.address.pinCode}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="hidden md:flex md:flex-col md:items-end">
+                  <p className="text-md leading-6 text-gray-900">
+                    Phone: {userOrder.address.phone}
+                  </p>
+                  <p className="text-md leading-6 text-gray-500">
+                    City: {userOrder.address.city}
+                  </p>
+
+
+                  {/* <div className="flex mt-4">
+                    <div
+                      // onClick={() => handleRemove(idx)}
+                      className="mx-2 cursor-pointer px-2 text-white bg-blue-400"
+                    >
+                      Delete
                     </div>
-                  </div>
-                  <div className="hidden sm:flex sm:flex-col sm:items-end">
-                    <p className="text-sm leading-6 text-gray-900">
-                      Phone: {userOrder.address.phone}
-                    </p>
-                    <p className="text-sm leading-6 text-gray-500">
-                        City:
-                      {userOrder.address.city}
-                    </p>
-                  </div>
+                    <div
+                      // onClick={() => handleEditAddress(idx)}
+                      className="px-2 cursor-pointer text-white bg-blue-400"
+                    >
+                      Edit
+                    </div>
+                  </div> */}
+
+
+                </div>
+
+
+              </li>
+
+
+
+              
+
             </div>
 
             </div>

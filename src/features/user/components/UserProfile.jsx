@@ -419,6 +419,7 @@ const UserProfile = () => {
           {userAddresses &&
             userAddresses.length > 0 &&
             userAddresses.map((address, idx) => (
+              
               <li
                 key={idx}
                 className="flex justify-between gap-x-6 px-20 py-5 border-solid border-2 border-gray-200"
@@ -459,7 +460,10 @@ const UserProfile = () => {
                     </div>
                   </div>
                 </div>
+
+
               </li>
+
             ))}
         </ul>
       </div>

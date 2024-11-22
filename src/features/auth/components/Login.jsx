@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import {RotatingLines} from 'react-loader-spinner'
+import React, { useEffect, useState } from "react";
+import { RotatingLines } from "react-loader-spinner";
 
 import { Navigate } from "react-router-dom";
 
@@ -20,8 +20,14 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
+  console.log("errors", errors);
+
+  // if(errors){
+  //   setError(errors);
+  // }
+
   const handleLogin = (loginData) => {
-    // console.log("loginData", loginData);
+    console.log("loginData", loginData);
     dispatch(loginUserAsync(loginData));
 
     // // console.log("After login");
@@ -56,7 +62,7 @@ const Login = () => {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Your Company"
-            src='https://i.pinimg.com/originals/41/ae/5e/41ae5ee27b597ca62c81e0b22054e9bd.jpg'
+            src="https://i.pinimg.com/originals/41/ae/5e/41ae5ee27b597ca62c81e0b22054e9bd.jpg"
             className="mx-auto h-10 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -81,9 +87,13 @@ const Login = () => {
               <div className="mt-2">
                 <input
                   {...register("email", {
-                    required: true,
-                    unique: true,
-                    message: "email is required",
+                    required: { value: true, message: "Email is required" },
+
+                    pattern: {
+                      value:
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                      message: "Invalid email",
+                    },
                   })}
                   id="email"
                   name="email"
@@ -93,6 +103,18 @@ const Login = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+
+              {errors.email?.type === "required" && (
+                <div role="alert" className="text-red-700">
+                  {errors.email.message}
+                </div>
+              )}
+
+              {errors.email?.type === "pattern" && (
+                <div role="alert" className="text-red-700">
+                  {errors.email.message}
+                </div>
+              )}
             </div>
 
             <div>
@@ -115,7 +137,14 @@ const Login = () => {
               <div className="mt-2">
                 <input
                   {...register("password", {
-                    required: true,
+                    required: {
+                      value:true,
+                      message:"Password is required"
+                    },
+                    minLength: {
+                      value: 4,
+                      message: "Password must contain minimum 4 characters",
+                    },
                     message: "password is required",
                   })}
                   id="password"
@@ -126,6 +155,12 @@ const Login = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+
+              {errors.password?.type === "minLength" && (
+                <div role="alert" className="text-red-700">
+                  {errors.password.message}
+                </div>
+              )}
             </div>
 
             <div>
