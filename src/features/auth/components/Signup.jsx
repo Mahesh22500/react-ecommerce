@@ -20,28 +20,28 @@ const Signup = () => {
     const userData = {
       email: data.email,
       password: data.password,
-      addresses:[],
-      role:"user"
+      addresses: [],
+      role: "user",
     };
 
     dispatch(createUserAsync(userData));
   };
 
-  const loggedInUser = useSelector(state=>state.auth.loggedInUser)
+  const loggedInUser = useSelector((state) => state.auth.loggedInUser);
 
-  if(loggedInUser){
-    dispatch(fetchLoggedInUserAsync(loggedInUser.id))
+  if (loggedInUser) {
+    dispatch(fetchLoggedInUserAsync(loggedInUser.id));
   }
 
   return (
     <div>
-      { loggedInUser ? <Navigate to = "/"></Navigate> : null}
+      {loggedInUser ? <Navigate to="/"></Navigate> : null}
       <div>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
               alt="Your Company"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src="https://i.pinimg.com/originals/41/ae/5e/41ae5ee27b597ca62c81e0b22054e9bd.jpg"
               className="mx-auto h-10 w-auto"
             />
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -67,7 +67,7 @@ const Signup = () => {
                   <input
                     {...register("email", {
                       required: true,
-                      unique:true,
+                      unique: true,
                       message: "email is required",
                     })}
                     id="email"
