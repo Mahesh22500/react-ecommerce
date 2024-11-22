@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { RotatingLines } from "react-loader-spinner";
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoggedInUserOrdersAsync } from "../userSlice";
 
@@ -6,6 +8,8 @@ const UserOrders = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.loggedInUser);
+
+  const userStatus = useSelector(state=>state.user.status);
 
   useEffect(() => {
     // console.log("Inside useEffect", user.id);
@@ -21,6 +25,22 @@ const UserOrders = () => {
           {" "}
           User Orders
         </h1>
+        {
+          userStatus == 'loading' ? <div>
+            <RotatingLines
+            visible={true}
+            height="96"
+            width="96"
+            color="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        
+          </div> :null
+        }
    {
     userOrders.length > 0 && userOrders.map(userOrder=>(
         <div>

@@ -6,6 +6,7 @@ import { createOrder, fetchAllOrders, updateOrder } from "./orderApi";
 const initialState = {
   orders: [],
   currentOrder: null,
+  status :"idle"
 };
 
 export const createOrderAsync = createAsyncThunk(
@@ -47,18 +48,36 @@ const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    .addCase(createOrderAsync.pending, (state, action) => {
+      state.status= 'loading'
+    })
+
       .addCase(createOrderAsync.fulfilled, (state, action) => {
         const order = action.payload;
         state.orders.push({ ...order, orderPlaced: true });
         state.currentOrder = order;
+      state.status= 'idle'
+
+      })
+      
+      .addCase(fetchAllOrdersAsync.pending, (state, action) => {
+        state.status = 'loading'
       })
       .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
         state.orders = action.payload;
+        state.status = 'idle'
+
+      })
+      
+      .addCase(updateOrderAsync.pending, (state, action) => {
+        state.status = 'loading'
       })
       .addCase(updateOrderAsync.fulfilled, (state, action) => {
         const id = action.payload.id;
         const index = state.orders.findIndex((order) => order.id === id);
         state.orders[index] = action.payload;
+        state.status = 'idle'
+
       });
   },
 });

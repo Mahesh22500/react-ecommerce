@@ -52,7 +52,7 @@ export default function Navbar({ children }) {
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Link to="/">
-                    <img alt="Your Company" src={user.imageUrl} className="h-8 w-8" />
+                    <img alt="Your Company" src='#' className="h-8 w-8" />
                   </Link>
                 </div>
                 <div className="hidden md:block">

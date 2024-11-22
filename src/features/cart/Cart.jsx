@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { RotatingLines } from "react-loader-spinner";
+
 import { Navigate } from "react-router-dom";
 
 import React from "react";
@@ -35,6 +37,8 @@ const Cart = () => {
 
   const items = useSelector((state) => state.cart.items);
 
+  const itemsStatus = useSelector(state=>state.cart.status)
+
   // console.log("items in cart",items);
 
 
@@ -49,6 +53,21 @@ const Cart = () => {
           {" "}
           Cart
         </h1>
+
+        {itemsStatus== 'loading' ? <div>
+          <RotatingLines
+            visible={true}
+            height="96"
+            width="96"
+            color="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        
+        </div> :null}
 
         <div className="flow-root">
           <ul role="list" className="-my-6 divide-y divide-gray-200">

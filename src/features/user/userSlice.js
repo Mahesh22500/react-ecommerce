@@ -6,6 +6,7 @@ import { updateUser } from "./userApi";
 const initialState = {
   userOrders: [],
   loggedInUser: null,
+  status:'idle'
 };
 
 export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
@@ -61,18 +62,47 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    
+    .addCase(fetchLoggedInUserOrdersAsync.pending, (state, action) => {
+      state.status = 'loading'
+    })
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.userOrders = action.payload;
+      state.status = 'idle'
+
+      })
+      
+      .addCase(updateUserAsync.pending, (state, action) => {
+      state.status = 'loading'
+        
+
       })
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.loggedInUser = action.payload;
+      state.status = 'idle'
+
+      })
+      
+      .addCase(fetchLoggedInUserAsync.pending,(state,action)=>{
+      state.status = 'loading'
+        
       })
       .addCase(fetchLoggedInUserAsync.fulfilled,(state,action)=>{
         state.loggedInUser = action.payload;
+      state.status = 'idle'
+
+      })
+      
+      .addCase(addAddressToUserAsync.pending, (state, action) => {
+        // console.log("action payload address ",action.payload)
+      state.status = 'loading'
+        
       })
       .addCase(addAddressToUserAsync.fulfilled, (state, action) => {
         // console.log("action payload address ",action.payload)
         state.loggedInUser = action.payload;
+      state.status = 'idle'
+
       });
       
       

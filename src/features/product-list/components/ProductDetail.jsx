@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux";
 
+import { RotatingLines } from "react-loader-spinner";
+
+
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
@@ -30,6 +33,10 @@ export default function ProductDetail() {
   }, []);
 
   const product = useSelector((state) => state.product.selectedProduct);
+
+  
+
+  const productStatus = useSelector(state=>state.product.status)
 
   const items = useSelector((state) => state.cart.items);
 
@@ -62,6 +69,19 @@ export default function ProductDetail() {
 
   return (
     <div className="bg-white">
+    {productStatus == 'loading' ? <div>
+      <RotatingLines
+            visible={true}
+            height="96"
+            width="96"
+            color="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+    </div> :null}
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol

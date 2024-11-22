@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { RotatingLines } from "react-loader-spinner";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   addAddressToUserAsync,
@@ -25,6 +27,9 @@ const UserProfile = () => {
   const [updateIndex, setUpdateIndex] = useState(null);
 
   const user = useSelector((state) => state.user.loggedInUser);
+  
+
+  const userStatus = useSelector(state=>state.user.status);
 
   const handleAddressForm = (data, e, idx) => {
     e.target.reset();
@@ -112,6 +117,22 @@ const UserProfile = () => {
 
   return (
     <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
+      {
+          userStatus == 'loading' ? <div>
+            <RotatingLines
+            visible={true}
+            height="96"
+            width="96"
+            color="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        
+          </div> :null
+        }
       <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
         {" "}
         User Profile
