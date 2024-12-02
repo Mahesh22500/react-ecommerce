@@ -9,3 +9,4 @@ export const statusOptions = [
 export const pageSize = 12;
 
 export const BASE_URL = "https://ecommerce-store-11.vercel.app";
+// export const BASE_URL = "http://localhost:2000";

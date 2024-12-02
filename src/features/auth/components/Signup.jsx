@@ -5,6 +5,7 @@ import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoggedInUserAsync } from "../../user/userSlice";
+import { RotatingLines } from "react-loader-spinner";
 const Signup = () => {
   const dispatch = useDispatch();
   const {
@@ -28,6 +29,12 @@ const Signup = () => {
   };
 
   const loggedInUser = useSelector((state) => state.auth.loggedInUser);
+  const loggedInStatus = useSelector(state=>state.auth.status)
+  const errorMessage = useSelector(state=>state.auth.errorMessage)
+
+  if(errorMessage){
+    alert(errorMessage);
+  }
 
   if (loggedInUser) {
     dispatch(fetchLoggedInUserAsync(loggedInUser.id));
@@ -35,6 +42,20 @@ const Signup = () => {
 
   return (
     <div>
+      
+      {loggedInStatus == "loading" ? (
+        <RotatingLines
+          visible={true}
+          height="96"
+          width="96"
+          color="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          ariaLabel="rotating-lines-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      ) : null}
       {loggedInUser ? <Navigate to="/"></Navigate> : null}
       <div>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -122,7 +143,7 @@ const Signup = () => {
                         message:"Password is required"
                       },
                       minLength: {
-                        value: 8,
+                        value: 4,
                         message: "Password must contain minimum 8 characters",
                       },
                     })}

@@ -7,14 +7,24 @@ import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 const initialState = {
   loggedInUser: null,
   status: "idle",
+  errorMessage: null,
 };
 
 export const createUserAsync = createAsyncThunk(
   "auth/createUser",
   async (userData) => {
-    const user = await createUser(userData);
+    
+    try{
+      const user = await createUser(userData);
+      console.log("user",user);
 
     return user;
+    }
+    catch(err){
+
+      console.log("error:",err);
+      throw err;
+    }
   }
 );
 
@@ -22,11 +32,13 @@ export const loginUserAsync = createAsyncThunk(
   "auth/loginUser",
   async (userData) => {
     // console.log("userData",userData);
-    const user = await loginUser(userData);
-
-    // console.log("user", user);
-
-    return user;
+    try {
+      const user = await loginUser(userData);
+      console.log("user", user);
+      return user;
+    } catch (err) {
+      throw err;
+    }
   }
 );
 
@@ -49,18 +61,29 @@ const authSlice = createSlice({
         state.status = "idle";
         localStorage.setItem("jwtToken", action.payload.token);
       })
+      .addCase(createUserAsync.rejected,(state,action)=>{
+        state.status = 'idle';
+        state.errorMessage = action.error.message;
+      })
 
       .addCase(loginUserAsync.pending, (state, action) => {
         state.status = "loading";
       })
       .addCase(loginUserAsync.fulfilled, (state, action) => {
         // console.log("action payload",action.payload)
+        console.log("fulfilled");
         state.loggedInUser = action.payload;
         state.status = "idle";
         localStorage.setItem("jwtToken", action.payload.token);
+
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
-        // console.log("action error",action.error);
+        // console.log("rejected");
+        state.status = 'idle' 
+        state.errorMessage = action.error.message
+
+        console.log("action error", action.error);
+
       });
   },
 });

@@ -1,12 +1,12 @@
 import { BASE_URL } from "../../constants";
 
-
 const baseUrl = BASE_URL + "/auth";
 
 export const createUser = (userData) => {
-  const queryUrl = baseUrl 
+  const queryUrl = baseUrl + "/signup";
   return new Promise(async (resolve, reject) => {
     // console.log("userData", userData);
+    
     const response = await fetch(queryUrl, {
       method: "POST",
       headers: {
@@ -17,17 +17,13 @@ export const createUser = (userData) => {
 
     const data = await response.json();
 
-    if(response.ok){
-
+    if (response.ok) {
       resolve(data);
-    }
-    else {
+    } else {
       reject(data);
     }
-
   });
 };
-
 
 export const loginUser = (userData) => {
   // console.log("userData in authApi", userData);
@@ -35,21 +31,26 @@ export const loginUser = (userData) => {
     const queryUrl = baseUrl + "/login";
     // console.log("queryUrl", queryUrl);
 
-    const response = await fetch(queryUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-    // const status = await response.status();
-    // // console.log("status",status);
+    try {
+      const response = await fetch(queryUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+      // const status = await response.status();
+      // // console.log("status",status);
 
-    const data = await response.json();
-    if (response.ok) {
-      resolve(data);
-    } else {
-      reject(data);
+      const data = await response.json();
+      if (response.ok) {
+        resolve(data);
+      } else {
+        console.log("error in authApi",data);
+        reject(data);
+      }
+    } catch (err) {
+      reject(err);
     }
   });
 };

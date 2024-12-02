@@ -37,6 +37,12 @@ const Login = () => {
 
   const loggedInStatus = useSelector((state) => state.auth.status);
 
+
+  const errorMessage = useSelector(state => state.auth.errorMessage);
+
+  if(errorMessage)
+    alert(errorMessage)
+
   if (loggedInUser) {
     dispatch(fetchLoggedInUserAsync(loggedInUser.id));
   }
