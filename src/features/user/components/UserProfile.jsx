@@ -116,9 +116,8 @@ const UserProfile = () => {
 
   return (
     <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
-      {
+      {userStatus == "loading" ? (
         <div className="flex items-center justify-center">
-          userStatus == 'loading' ?{" "}
           <div>
             <RotatingLines
               visible={true}
@@ -132,9 +131,8 @@ const UserProfile = () => {
               wrapperClass=""
             />
           </div>{" "}
-          :null
         </div>
-      }
+      ) : null}
       <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
         {" "}
         User Profile
