@@ -7,7 +7,7 @@ const LogOutPage = () => {
     <div>
       <Navbar></Navbar>
       <div className="flex items-center justify-center ">
-        <div className="  h-[70%] w-[70%]  md:w-[40%] lg:w-[30%]">
+        <div className="  h-[70%] w-[80%]  md:w-[40%] lg:w-[30%]">
           <Logout></Logout>
         </div>
       </div>
