@@ -51,19 +51,6 @@ const Signup = () => {
   return (
     <div>
       
-      {loggedInStatus == "loading" ? (
-        <RotatingLines
-          visible={true}
-          height="96"
-          width="96"
-          color="grey"
-          strokeWidth="5"
-          animationDuration="0.75"
-          ariaLabel="rotating-lines-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-        />
-      ) : null}
       {loggedInUser ? <Navigate to="/"></Navigate> : null}
       <div>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

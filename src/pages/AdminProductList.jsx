@@ -80,7 +80,7 @@ export const Products = () => {
   return (
     <div>
       {productsStatus == "loading" ? (
-        <div>
+        <div className="flex justify-center items-center">
           <RotatingLines
             visible={true}
             height="96"

@@ -64,6 +64,10 @@ const Cart = () => {
           {" "}
           Cart
         </h1>
+        
+
+        <div className="flex items-center justify-center">
+
 
         {itemsStatus== 'loading' ? <div>
           <RotatingLines
@@ -79,6 +83,8 @@ const Cart = () => {
           />
         
         </div> :null}
+
+        </div>
 
         <div className="flow-root">
           <ul role="list" className="-my-6 divide-y divide-gray-200">

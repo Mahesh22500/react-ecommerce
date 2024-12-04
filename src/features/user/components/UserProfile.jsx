@@ -27,9 +27,8 @@ const UserProfile = () => {
   const [updateIndex, setUpdateIndex] = useState(null);
 
   const user = useSelector((state) => state.user.loggedInUser);
-  
 
-  const userStatus = useSelector(state=>state.user.status);
+  const userStatus = useSelector((state) => state.user.status);
 
   const handleAddressForm = (data, e, idx) => {
     e.target.reset();
@@ -118,21 +117,24 @@ const UserProfile = () => {
   return (
     <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
       {
-          userStatus == 'loading' ? <div>
+        <div className="flex items-center justify-center">
+          userStatus == 'loading' ?{" "}
+          <div>
             <RotatingLines
-            visible={true}
-            height="96"
-            width="96"
-            color="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
-        
-          </div> :null
-        }
+              visible={true}
+              height="96"
+              width="96"
+              color="grey"
+              strokeWidth="5"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>{" "}
+          :null
+        </div>
+      }
       <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
         {" "}
         User Profile
@@ -147,15 +149,13 @@ const UserProfile = () => {
       </h1>
 
       <div className="flex flex-col">
-        
         <div className="flex">
-        <div
-          onClick={() => setEditProfile(true)}
-          className="mx-2 cursor-pointer px-2 text-white bg-blue-400 "
-        >
-          Edit Profile Picture
-        </div>
-
+          <div
+            onClick={() => setEditProfile(true)}
+            className="mx-2 cursor-pointer px-2 text-white bg-blue-400 "
+          >
+            Edit Profile Picture
+          </div>
         </div>
         {editProfile && (
           <div className="sm:col-span-4">
@@ -174,23 +174,21 @@ const UserProfile = () => {
                 autoComplete="imageUrl"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
-              
-            <div className="flex mt-2 ">
-              
-            <div
-                onClick={handleSubmit(handleProfilePicture)}
-                className="px-2 cursor-pointer text-white bg-blue-400"
-              >
-                Add
-              </div>
-              <div
-                onClick={()=>setEditProfile(false)}
-                className="px-2 mx-2 cursor-pointer text-white bg-blue-400"
-              >
-                Close
-              </div>
-              </div>
 
+              <div className="flex mt-2 ">
+                <div
+                  onClick={handleSubmit(handleProfilePicture)}
+                  className="px-2 cursor-pointer text-white bg-blue-400"
+                >
+                  Add
+                </div>
+                <div
+                  onClick={() => setEditProfile(false)}
+                  className="px-2 mx-2 cursor-pointer text-white bg-blue-400"
+                >
+                  Close
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -419,7 +417,6 @@ const UserProfile = () => {
           {userAddresses &&
             userAddresses.length > 0 &&
             userAddresses.map((address, idx) => (
-              
               <li
                 key={idx}
                 className="flex justify-between gap-x-6 px-20 py-5 border-solid border-2 border-gray-200"
@@ -460,10 +457,7 @@ const UserProfile = () => {
                     </div>
                   </div>
                 </div>
-
-
               </li>
-
             ))}
         </ul>
       </div>

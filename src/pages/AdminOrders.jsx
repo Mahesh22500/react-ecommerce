@@ -57,7 +57,7 @@ const AdminOrders = () => {
   return (
     <div className="relative overflow-x-auto">
       {ordersStatus == "loading" ? (
-        <div>
+        <div className="flex items-center justify-center">
           <RotatingLines
             visible={true}
             height="96"

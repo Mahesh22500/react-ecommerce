@@ -59,7 +59,7 @@ export default function AdminProductDetail() {
   return (
     <div className="bg-white">
       {productStatus == "loading" ? (
-        <div>
+        <div className="flex items-center justify-center">
           <RotatingLines
             visible={true}
             height="96"

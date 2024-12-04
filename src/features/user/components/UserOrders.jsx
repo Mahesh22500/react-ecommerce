@@ -26,6 +26,8 @@ const UserOrders = () => {
           User Orders
         </h1>
         {
+          <div className="flex items-center justify-center">
+            
           userStatus == 'loading' ? <div>
             <RotatingLines
             visible={true}
@@ -40,6 +42,8 @@ const UserOrders = () => {
           />
         
           </div> :null
+            </div>
+            
         }
    {
     userOrders.length > 0 && userOrders.map(userOrder=>(
