@@ -98,23 +98,37 @@ export const Products = ({ page, allProducts }) => {
                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                           />
                         </div>
-                        <div className="mt-4 flex justify-between">
+                        <div className="mt-4">
                           <div>
-                            <h3 className="text-sm text-gray-700">
+
+                            <h3 className="text-sm text-gray-700 border border-gray-200 border-2 truncate">
                               <span
                                 aria-hidden="true"
                                 className="absolute inset-0"
                               />
                               {product.title}
                             </h3>
-                            <p className="mt-1 text-sm text-gray-500">
-                              <StarIcon className="w-6 h-6 inline"></StarIcon>
+                            
+
+                          
+                          </div>
+
+                        <div className="mt-2 flex justify-between">
+
+                          <div className="flex">
+                            
+                          <StarIcon className="w-6 h-6 inline"></StarIcon>
+                        <p className="mt-[1px] ml-[2px] text-md text-gray-500">
                               {product.rating}
                             </p>
                           </div>
-                          <p className="text-sm font-medium text-gray-900">
+
+                          <p className=" pt-[2px] ml-[2px] text-md font-medium text-gray-900">
                             ${product.price}
                           </p>
+                        </div>
+
+
                         </div>
                       </div>
                     </Link>
