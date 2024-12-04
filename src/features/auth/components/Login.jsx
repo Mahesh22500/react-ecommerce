@@ -3,7 +3,7 @@ import { RotatingLines } from "react-loader-spinner";
 
 import { Navigate } from "react-router-dom";
 
-import { loginUserAsync } from "../authSlice";
+import { clearEror, loginUserAsync } from "../authSlice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -37,11 +37,14 @@ const Login = () => {
 
   const loggedInStatus = useSelector((state) => state.auth.status);
 
+  const errorMessage = useSelector((state) => state.auth.errorMessage);
 
-  const errorMessage = useSelector(state => state.auth.errorMessage);
-
-  if(errorMessage)
-    alert(errorMessage)
+  if (errorMessage) {
+    setTimeout(() => {
+      alert(errorMessage);
+      dispatch(clearEror());
+    }, 300);
+  }
 
   if (loggedInUser) {
     dispatch(fetchLoggedInUserAsync(loggedInUser.id));
@@ -144,8 +147,8 @@ const Login = () => {
                 <input
                   {...register("password", {
                     required: {
-                      value:true,
-                      message:"Password is required"
+                      value: true,
+                      message: "Password is required",
                     },
                     minLength: {
                       value: 4,

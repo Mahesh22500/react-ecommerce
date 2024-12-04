@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { createUserAsync } from "../authSlice";
+import { clearEror, createUserAsync } from "../authSlice";
 
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
@@ -32,6 +32,14 @@ const Signup = () => {
   const loggedInStatus = useSelector(state=>state.auth.status)
   const errorMessage = useSelector(state=>state.auth.errorMessage)
 
+  
+  if (errorMessage) {
+    setTimeout(() => {
+      alert(errorMessage);
+      dispatch(clearEror());
+    }, 300);
+  }
+
   if(errorMessage){
     alert(errorMessage);
   }
@@ -39,7 +47,7 @@ const Signup = () => {
   if (loggedInUser) {
     dispatch(fetchLoggedInUserAsync(loggedInUser.id));
   }
-
+ 
   return (
     <div>
       
