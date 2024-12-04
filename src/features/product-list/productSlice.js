@@ -17,7 +17,8 @@ const initialState = {
   brands: [],
   categories: [],
   selectedProduct: null,
-  pagedProducts: [],
+  filteredProducts: [],
+  allProducts:[],
   status: "idle",
 };
 
@@ -124,6 +125,9 @@ const productSlice = createSlice({
         state.products.sort((p, q) => q[label] - p[label]);
       }
     },
+    setAllProducts:(state,action)=>{
+      state.products = state.allProducts;
+    }
   },
 
   extraReducers: (builder) => {
@@ -136,6 +140,7 @@ const productSlice = createSlice({
         console.log("products in extra reducer before", state.products);
 
         state.products = action.payload;
+        state.allProducts = action.payload;
         state.status = "idle";
         console.log("products in extra reducer after", state.products);
       })
@@ -145,7 +150,7 @@ const productSlice = createSlice({
       })
 
       .addCase(fetchProductsByFilterAsync.fulfilled, (state, action) => {
-        state.products = action.payload;
+        state.filteredProducts = action.payload;
         state.status = "idle";
       })
 
@@ -202,4 +207,4 @@ const productSlice = createSlice({
 });
 
 export const productReducer = productSlice.reducer;
-export const { sortProducts } = productSlice.actions;
+export const { sortProducts,setAllProducts } = productSlice.actions;

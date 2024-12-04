@@ -21,8 +21,8 @@ const AdminHome = () => {
   return (
     <div>
       <Navbar>
-        <AdminProductList></AdminProductList>
       </Navbar>
+        <AdminProductList></AdminProductList>
     </div>
   );
 };

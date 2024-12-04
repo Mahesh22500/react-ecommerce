@@ -23,10 +23,14 @@ import {
 
 const Cart = () => {
 
+  
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
 
+  const items = useSelector((state) => state.cart.items);
   useEffect(()=>{
 
+    
+    
     dispatch(getItemsByIdAsync(loggedInUser.id));
 
   },[])
@@ -42,7 +46,6 @@ const Cart = () => {
     );
   };
 
-  const items = useSelector((state) => state.cart.items);
   
 
   const itemsStatus = useSelector(state=>state.cart.status)

@@ -7,6 +7,7 @@ import {
   fetchPagedProducts,
   fetchProductsByFilterAsync,
   sortProducts,
+  setAllProducts
 } from "../productSlice";
 import { useEffect } from "react";
 import React from "react";
@@ -39,8 +40,7 @@ import { pageSize } from "../../../constants";
 import { userReducer } from "../../user/userSlice";
 import { RotatingLines } from "react-loader-spinner";
 
-export const Products = ({ page }) => {
-  const allProducts = useSelector((state) => state.product.products);
+export const Products = ({ page, allProducts }) => {
   const user = useSelector((state) => state.auth.loggedInUser);
   const products = allProducts.filter(
     (product) => !(user.role === "user" && product.deleted)
@@ -159,8 +159,19 @@ function classNames(...classes) {
 export const ProductList = () => {
   const brands = useSelector((state) => state.product.brands);
   const categories = useSelector((state) => state.product.categories);
+  const [toSort,setToSort] = useState(false);
+
+  const [filter, setFilter] = useState({
+    brand: null,
+    category: null,
+  });
 
   const products = useSelector((state) => state.product.products);
+  const filteredProducts = useSelector(
+    (state) => state.product.filteredProducts
+  );
+
+  // const allProducts = useSelector((state) => state.product.products);
 
   const filters = [
     {
@@ -186,10 +197,14 @@ export const ProductList = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(fetchBrandsAsync());
-    dispatch(fetchCategoriesAsync());
 
-    dispatch(fetchAllProductsAsync());
+    dispatch(setAllProducts())
+    if (products.length == 0) {
+      dispatch(fetchBrandsAsync());
+      dispatch(fetchCategoriesAsync());
+
+      dispatch(fetchAllProductsAsync());
+    }
     setPage(1);
   }, []);
 
@@ -209,13 +224,9 @@ export const ProductList = () => {
     for (let i = 0; i < pagesLen; i++) pages[i] = i + 1;
   }
 
-  const [filter, setFilter] = useState({
-    brand: null,
-    category: null,
-  });
-
   const handleSort = (e, option) => {
     // console.log("sort clicked");
+    setToSort(true);
 
     // console.log("option", option);
 
@@ -241,7 +252,7 @@ export const ProductList = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   useEffect(function () {
-    dispatch(fetchAllProductsAsync());
+    if (products.length == 0) dispatch(fetchAllProductsAsync());
   }, []);
 
   const handlePagination = (page) => {
@@ -465,7 +476,16 @@ export const ProductList = () => {
 
               {/* Product grid */}
               <div className="lg:col-span-3">
-                {<Products page={page}></Products>}
+                {
+                  <Products
+                    page={page}
+                    allProducts={
+                      filter.brand || filter.category
+                        ? filteredProducts
+                        : products
+                    }
+                  ></Products>
+                }
               </div>
             </div>
           </section>

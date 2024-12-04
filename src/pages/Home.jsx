@@ -21,8 +21,8 @@ const Home = () => {
   return (
     <div>
       <Navbar>
-        <ProductList></ProductList>
       </Navbar>
+        <ProductList></ProductList>
     </div>
   );
 };
