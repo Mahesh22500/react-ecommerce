@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { RotatingLines } from "react-loader-spinner";
-
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 
 import { Link } from "react-router-dom";
 
@@ -34,16 +33,12 @@ export default function ProductDetail() {
 
   const product = useSelector((state) => state.product.selectedProduct);
 
-  
-
-  const productStatus = useSelector(state=>state.product.status)
+  const productStatus = useSelector((state) => state.product.status);
 
   const items = useSelector((state) => state.cart.items);
 
   // // console.log("product1",product);
   const user = useSelector((state) => state.user.loggedInUser);
-
-  
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -57,39 +52,30 @@ export default function ProductDetail() {
 
     dispatch(addItemToCartAsync(item));
 
-    alert("Product has been added to cart")
+    alert("Product has been added to cart");
   };
-
 
   return (
     <div className="bg-white">
+      <div className="flex items-center justify-center">
+        {productStatus == "loading" ? (
+          <div>
+            <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="color-ring-loading"
+              wrapperStyle={{}}
+              wrapperClass="color-ring-wrapper"
+              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            />
+          </div>
+        ) : null}
+      </div>
 
-
-<div className="flex items-center justify-center">
-{productStatus == 'loading' ? <div>
-      <RotatingLines
-            visible={true}
-            height="96"
-            width="96"
-            color="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
-    </div> :null}
-
-</div>
-  
-    
       <div className="pt-6">
-
-     
-
         {/* Image gallery */}
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
               src={product?.thumbnail}
@@ -167,8 +153,6 @@ export default function ProductDetail() {
             </div>
 
             <form className="mt-10">
-              
-
               <button
                 onClick={handleAddToCart}
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -179,9 +163,6 @@ export default function ProductDetail() {
                 <button>Cart</button>
               </Link> */}
             </form>
-
-
-            
           </div>
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
@@ -195,7 +176,6 @@ export default function ProductDetail() {
                 </p>
               </div>
             </div>
-
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { RotatingLines } from "react-loader-spinner";
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoggedInUserOrdersAsync } from "../userSlice";
@@ -28,17 +28,16 @@ const UserOrders = () => {
       {userStatus == "loading" ? (
         <div>
           <div className="flex items-center justify-center">
-            <RotatingLines
-              visible={true}
-              height="96"
-              width="96"
-              color="grey"
-              strokeWidth="5"
-              animationDuration="0.75"
-              ariaLabel="rotating-lines-loading"
-              wrapperStyle={{}}
-              wrapperClass=""
-            />
+            <ColorRing
+                          visible={true}
+                          height="80"
+                          width="80"
+                          ariaLabel="color-ring-loading"
+                          wrapperStyle={{}}
+                          wrapperClass="color-ring-wrapper"
+                          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                          />
+                          
           </div>
         </div>
       ) : null}
@@ -136,7 +135,7 @@ const UserOrders = () => {
             </div>
 
             <div className="mx-4 md:mx-16">
-              <div className="  px-2 text-white text-center h-10 py-2 bg-blue-400">
+              <div className="  px-2 text-white text-center h-10 py-2 bg-blue-700">
                 Shipping Address
               </div>
               <li className="flex justify-between gap-x-6 px-20 py-5 border-solid border-2 border-gray-200">
@@ -146,7 +145,7 @@ const UserOrders = () => {
                       Name: {userOrder.address.name}
                     </p>
                     <p className="mt-1 truncate text-md leading-5 text-gray-500">
-                      Street: {userOrder.address.street}
+                      Street: {userOrder.address.streetAddress}
                     </p>
                     <p className="mt-1 truncate text-md leading-5 text-gray-500">
                       PinCode: {userOrder.address.pinCode}

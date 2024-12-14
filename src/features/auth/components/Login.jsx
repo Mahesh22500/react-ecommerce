@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RotatingLines } from "react-loader-spinner";
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 
 import { Navigate } from "react-router-dom";
 
@@ -55,16 +55,14 @@ const Login = () => {
     <div>
       <div className="flex items-center justify-center ">
       {loggedInStatus == "loading" ? (
-        <RotatingLines
-          visible={true}
-          height="96"
-          width="96"
-          color="grey"
-          strokeWidth="5"
-          animationDuration="0.75"
-          ariaLabel="rotating-lines-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
+        <ColorRing
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="color-ring-loading"
+        wrapperStyle={{}}
+        wrapperClass="color-ring-wrapper"
+        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
         />
       ) : null}
       </div>
@@ -73,7 +71,7 @@ const Login = () => {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Your Company"
-            src="https://i.pinimg.com/originals/41/ae/5e/41ae5ee27b597ca62c81e0b22054e9bd.jpg"
+            src={`https://tailwindui.com/plus/img/logos/mark.svg?color=black &shade=1000`}
             className="mx-auto h-10 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -111,7 +109,7 @@ const Login = () => {
                   type="email"
                   required
                   autoComplete="admin@xyz"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black-600 sm:text-sm sm:leading-6"
                 />
               </div>
 
@@ -139,7 +137,7 @@ const Login = () => {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    className="font-semibold text-black-600 hover:text-black-500"
                   >
                     Forgot password?
                   </a>
@@ -163,7 +161,7 @@ const Login = () => {
                   type="password"
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black-600 sm:text-sm sm:leading-6"
                 />
               </div>
 
@@ -177,7 +175,7 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-black  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-black-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
               >
                 Sign in
               </button>
@@ -188,7 +186,7 @@ const Login = () => {
             Not a member?{" "}
             <Link
               to="/signup"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="font-semibold leading-6 text-black-600 hover:text-black-500"
             >
               Create an Account
             </Link>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RotatingLines } from "react-loader-spinner";
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,8 +9,12 @@ import {
   updateUserAsync,
 } from "../userSlice";
 import { useForm } from "react-hook-form";
+import StyledButton from "../../auth/components/StyledButton";
 
 const UserProfile = () => {
+  const userStatus = useSelector((state) => state.user.status);
+
+  
   const {
     register,
     handleSubmit,
@@ -28,7 +32,25 @@ const UserProfile = () => {
 
   const user = useSelector((state) => state.user.loggedInUser);
 
-  const userStatus = useSelector((state) => state.user.status);
+  const dispatch = useDispatch();
+  if (userStatus == "loading")
+    return (
+      <div className="flex items-center justify-center">
+        <div>
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
+        </div>{" "}
+      </div>
+    );
+
+  console.log("user in userprofile", user);
 
   const handleAddressForm = (data, e, idx) => {
     e.target.reset();
@@ -69,7 +91,6 @@ const UserProfile = () => {
 
   const userAddresses = user.addresses;
 
-  const dispatch = useDispatch();
 
   const handleRemove = (idx) => {
     const newAddresses = userAddresses.filter((address, id) => id !== idx);
@@ -119,16 +140,14 @@ const UserProfile = () => {
       {userStatus == "loading" ? (
         <div className="flex items-center justify-center">
           <div>
-            <RotatingLines
+            <ColorRing
               visible={true}
-              height="96"
-              width="96"
-              color="grey"
-              strokeWidth="5"
-              animationDuration="0.75"
-              ariaLabel="rotating-lines-loading"
+              height="80"
+              width="80"
+              ariaLabel="color-ring-loading"
               wrapperStyle={{}}
-              wrapperClass=""
+              wrapperClass="color-ring-wrapper"
+              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
             />
           </div>{" "}
         </div>
@@ -137,24 +156,45 @@ const UserProfile = () => {
         {" "}
         User Profile
       </h1>
-      <h1 className="text-2xl  my-5 font-bold tracking-tight text-gray-900">
-        {" "}
-        Email : {user.email}
-      </h1>
       <h1 className="text-2xl my-5 font-bold tracking-tight text-gray-900">
         {" "}
         {user.role === "admin" ? `Role : ${user.role}` : ""}
       </h1>
 
+      <div className="flex flex-col items-center">
+              <div className="w-full flex flex-row-reverse"></div>
+              <img
+                src={
+                  user && user.imageUrl
+                    ? user.imageUrl
+                    : `https://as2.ftcdn.net/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.webp`
+                }
+                className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
+              />
+              <h1 className="text-xl font-bold">
+                {user.email} 
+              </h1>
+              {/* <p className="text-gray-700">
+                {user.profession || "Software Engineer"}
+
+              </p> */}
+            </div>
+
       <div className="flex flex-col">
-        <div className="flex">
+        {/* <div className="flex">
           <div
             onClick={() => setEditProfile(true)}
             className="mx-2 cursor-pointer px-2 text-white bg-blue-400 "
           >
             Edit Profile Picture
           </div>
+        </div> */}
+        <div>
+          
+        <StyledButton btnText="Edit Profile Picture" onClick ={()=> setEditProfile(true)}  color="blue"></StyledButton>
+
         </div>
+
         {editProfile && (
           <div className="sm:col-span-4">
             <label
@@ -173,27 +213,50 @@ const UserProfile = () => {
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
 
-              <div className="flex mt-2 ">
-                <div
+              <div className="flex mt-2 gap-2 ">
+                {/* <div
                   onClick={handleSubmit(handleProfilePicture)}
                   className="px-2 cursor-pointer text-white bg-blue-400"
                 >
                   Add
-                </div>
-                <div
+                </div> */}
+                <StyledButton btnText="Add link" onClick={handleSubmit(handleProfilePicture)} color="blue"></StyledButton>
+                {/* <div
                   onClick={() => setEditProfile(false)}
                   className="px-2 mx-2 cursor-pointer text-white bg-blue-400"
                 >
                   Close
-                </div>
+                </div> */}
+                <StyledButton btnText="Close" onClick={()=>setEditProfile(false)} color="red"></StyledButton>
+
               </div>
             </div>
           </div>
         )}
       </div>
 
+      <div className="flex justify-between my-5">
+        <div className="text-base font-semibold leading-7 text-gray-900">
+          Shipping Addresses
+        </div>
+        {/* <div
+                onClick={handleAddAddress}
+                className="mx-2 cursor-pointer px-2 text-white bg-blue-400"
+              >
+                Add New Address
+              </div> */}
+
+        {
+          <StyledButton
+            btnText="Add New Address"
+            onClick={handleAddAddress}
+            color="green"
+          ></StyledButton>
+        }
+      </div>
+
       <div className="border-b border-gray-900/10 pb-12">
-        {userAddresses && userAddresses.length > 0 && (
+        {
           <>
             {(updateEnabled || addEnabled) && (
               <form
@@ -283,25 +346,6 @@ const UserProfile = () => {
                             name="streetAddress"
                             id="streetAddress"
                             autoComplete="streetAddress"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-span-full">
-                        <label
-                          htmlFor="street-address"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Profile Picture
-                        </label>
-                        <div className="mt-2">
-                          <input
-                            {...register("imageUrl")}
-                            type="url"
-                            name="imageUrl"
-                            id="imageUrl"
-                            autoComplete="imageUrl"
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
                         </div>
@@ -397,20 +441,8 @@ const UserProfile = () => {
                 </div>
               </form>
             )}
-
-            <div className="flex justify-between my-5">
-              <div className="text-base font-semibold leading-7 text-gray-900">
-                Shipping Addresses
-              </div>
-              <div
-                onClick={handleAddAddress}
-                className="mx-2 cursor-pointer px-2 text-white bg-blue-400"
-              >
-                Add New Address
-              </div>
-            </div>
           </>
-        )}
+        }
         <ul role="list">
           {userAddresses &&
             userAddresses.length > 0 &&
@@ -425,7 +457,7 @@ const UserProfile = () => {
                       Name: {address.name}
                     </p>
                     <p className="mt-1 truncate text-md leading-5 text-gray-500">
-                      Street: {address.street}
+                      Street: {address.streetAddress}
                     </p>
                     <p className="mt-1 truncate text-md leading-5 text-gray-500">
                       PinCode: {address.pinCode}
@@ -440,19 +472,30 @@ const UserProfile = () => {
                   <p className="text-md leading-6 text-gray-500">
                     City: {address.city}
                   </p>
-                  <div className="flex mt-4">
-                    <div
+                  <div className="flex mt-4 gap-2">
+                    {/* <div
                       onClick={() => handleRemove(idx)}
                       className="mx-2 cursor-pointer px-2 text-white bg-blue-400"
                     >
                       Delete
                     </div>
-                    <div
+                     */}
+                    <StyledButton
+                      btnText="Delete"
+                      color="red"
+                      onClick={() => handleRemove(idx)}
+                    ></StyledButton>
+                    {/* <div
                       onClick={() => handleEditAddress(idx)}
                       className="px-2 cursor-pointer text-white bg-blue-400"
                     >
                       Edit
-                    </div>
+                    </div> */}
+                    <StyledButton
+                      btnText="Edit"
+                      color="blue"
+                      onClick={() => handleEditAddress(idx)}
+                    ></StyledButton>
                   </div>
                 </div>
               </li>

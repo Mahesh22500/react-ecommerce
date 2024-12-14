@@ -38,12 +38,18 @@ import {
 import { useDispatch } from "react-redux";
 import { pageSize } from "../../../constants";
 import { userReducer } from "../../user/userSlice";
-import { RotatingLines } from "react-loader-spinner";
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 
 export const Products = ({ page, allProducts }) => {
   const user = useSelector((state) => state.auth.loggedInUser);
   const products = allProducts.filter(
-    (product) => !(user.role === "user" && product.deleted)
+    (product) => {
+      if(!product.deleted)
+        return true;
+
+      if(user && user.role=='admin')
+        return true;
+    }
   );
 
   const getPagedProducts = (page) => {
@@ -69,17 +75,16 @@ export const Products = ({ page, allProducts }) => {
 
       {productsStatus == "loading" ? (
         <div>
-          <RotatingLines
-            visible={true}
-            height="96"
-            width="96"
-            color="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
+          <ColorRing
+                        visible={true}
+                        height="80"
+                        width="80"
+                        ariaLabel="color-ring-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="color-ring-wrapper"
+                        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                        />
+                        
         </div>
       ) : null}
 

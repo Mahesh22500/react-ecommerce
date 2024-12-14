@@ -18,10 +18,12 @@ import { Link } from "react-router-dom";
 const navigation = [
   { name: "Admin", link: "/admin", role: "admin" },
   { name: "Orders", link: "/admin/orders", role: "admin" },
+  { name: "My Orders", link: "/orders", role: "user" },
+  { name: "My Profile", link: "/profile", role: "user" },
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "/profile" },
-  { name: "Your Orders", href: "/orders" },
+  { name: "My Profile", href: "/profile" },
+  { name: "My Orders", href: "/orders" },
   { name: "Sign out", href: "/logout" },
 ];
 
@@ -51,30 +53,46 @@ export default function Navbar({ children }) {
                   <Link to="/">
                     <img
                       alt="Your Company"
-                      src="https://i.pinimg.com/originals/41/ae/5e/41ae5ee27b597ca62c81e0b22054e9bd.jpg"
+                      src={`https://tailwindui.com/plus/img/logos/mark.svg?color=black &shade=1000`}
                       className="h-8 w-8"
                     />
                   </Link>
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    {navigation
-                      .filter((item) => item.role === user.role)
-                      .map((item) => (
-                        <Link
-                          key={item.name}
-                          to={item.link}
-                          aria-current={item.current ? "page" : undefined}
-                          className={classNames(
-                            item.current
-                              ? "bg-gray-900 text-white"
-                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "rounded-md px-3 py-2 text-sm font-medium"
-                          )}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
+                    {user
+                      ? navigation
+                          .filter((item) => item.role === user.role)
+                          .map((item) => (
+                            <Link
+                              key={item.name}
+                              to={item.link}
+                              aria-current={item.current ? "page" : undefined}
+                              className={classNames(
+                                item.current
+                                  ? "bg-gray-900 text-white"
+                                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                "rounded-md px-3 py-2 text-sm font-medium"
+                              )}
+                            >
+                              {item.name}
+                            </Link>
+                          ))
+                      : navigation.map((item) => (
+                          <Link
+                            key={item.name}
+                            to={item.link}
+                            aria-current={item.current ? "page" : undefined}
+                            className={classNames(
+                              item.current
+                                ? "bg-gray-900 text-white"
+                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              "rounded-md px-3 py-2 text-sm font-medium"
+                            )}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
                   </div>
                 </div>
               </div>
@@ -100,7 +118,10 @@ export default function Navbar({ children }) {
                         <span className="sr-only">Open user menu</span>
                         <img
                           alt=""
-                          src={user.imageUrl}
+                          src={
+                     user && user.imageUrl ? user.imageUrl :`https://as2.ftcdn.net/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.webp`
+
+                          }
                           className="h-8 w-8 rounded-full"
                         />
                       </MenuButton>
@@ -143,11 +164,11 @@ export default function Navbar({ children }) {
 
           <DisclosurePanel className="md:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-              {navigation
-                .filter((item) => item.role === user.role)
-                .map((item) => (
-                  <Link to={item.href}></Link>
-                ))}
+              {user
+                ? navigation
+                    .filter((item) => item.role === user.role)
+                    .map((item) => <Link to={item.href}></Link>)
+                : navigation.map((item) => <Link to={item.href}></Link>)}
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
               <div className="flex items-center px-5">

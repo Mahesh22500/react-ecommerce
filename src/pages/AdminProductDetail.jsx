@@ -11,7 +11,7 @@ import { RadioGroup } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 
 import { addItemToCartAsync } from "../features/cart/cartSlice";
-import { RotatingLines } from "react-loader-spinner";
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -60,17 +60,16 @@ export default function AdminProductDetail() {
     <div className="bg-white">
       {productStatus == "loading" ? (
         <div className="flex items-center justify-center">
-          <RotatingLines
-            visible={true}
-            height="96"
-            width="96"
-            color="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
+          <ColorRing
+                        visible={true}
+                        height="80"
+                        width="80"
+                        ariaLabel="color-ring-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="color-ring-wrapper"
+                        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                        />
+                        
         </div>
       ) : null}
 

@@ -38,20 +38,18 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/react/20/solid";
 import { useDispatch } from "react-redux";
-import { RotatingLines } from "react-loader-spinner";
+import { ColorRing, RotatingLines } from "react-loader-spinner";
 
 export const Products = () => {
   const products = useSelector((state) => state.product.products);
 
   const productsStatus = useSelector((state) => state.product.status);
 
-
   const dispatch = useDispatch();
-  
+
   const [addProductMode, setAddProductMode] = useState(false);
 
   const [editableProduct, setEditableProduct] = useState(-1);
-
 
   const handleEditProduct = (id) => {
     // console.log("Edit product", id);
@@ -60,7 +58,7 @@ export const Products = () => {
 
   const handleDeleteProduct = (id) => {
     // console.log("Delete Product");
-    dispatch(deleteProductAsync(id))
+    dispatch(deleteProductAsync(id));
   };
 
   const handleAddProduct = () => {
@@ -81,16 +79,14 @@ export const Products = () => {
     <div>
       {productsStatus == "loading" ? (
         <div className="flex justify-center items-center">
-          <RotatingLines
+          <ColorRing
             visible={true}
-            height="96"
-            width="96"
-            color="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
+            height="80"
+            width="80"
+            ariaLabel="color-ring-loading"
             wrapperStyle={{}}
-            wrapperClass=""
+            wrapperClass="color-ring-wrapper"
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
           />
         </div>
       ) : null}
@@ -108,58 +104,59 @@ export const Products = () => {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {products && products.map((product) => (
-              <div>
-                <Link to={`/product-detail/${product.id}`}>
-                  <div key={product.id} className="group relative">
-                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                      <img
-                        alt={product.imageAlt}
-                        src={product.thumbnail}
-                        className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                      />
-                    </div>
-                    <div className="text-sm text-gray-700 h-8 relative">
-                      <a href={product.href}>
-                        <span aria-hidden="true" className="" />
-                        {product.title}
-                      </a>
-                    </div>
-                    <div className=" mt-4 flex justify-between">
-                      <div className="flex  mt-1 text-sm text-gray-500">
-                        <StarIcon className="w-6 h-6 inline "></StarIcon>
-                        <div className="w-6 h-6 inline   text-base ">
-                          {product.rating}
-                        </div>
+            {products &&
+              products.map((product) => (
+                <div>
+                  <Link to={`/product-detail/${product.id}`}>
+                    <div key={product.id} className="group relative">
+                      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                        <img
+                          alt={product.imageAlt}
+                          src={product.thumbnail}
+                          className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                        />
                       </div>
-
-                      {product.deleted ? (
-                        <div>deleted</div>
-                      ) : (
-                        <div className="mt-1 text-base text-gray-500">
-                          $ {product.price}
+                      <div className="text-sm text-gray-700 h-8 relative">
+                        <a href={product.href}>
+                          <span aria-hidden="true" className="" />
+                          {product.title}
+                        </a>
+                      </div>
+                      <div className=" mt-4 flex justify-between">
+                        <div className="flex  mt-1 text-sm text-gray-500">
+                          <StarIcon className="w-6 h-6 inline "></StarIcon>
+                          <div className="w-6 h-6 inline   text-base ">
+                            {product.rating}
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  </div>
-                </Link>
 
-                <div className="flex justify-between mt-2 ">
-                  <div
-                    onClick={() => handleEditProduct(product.id)}
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg px-2  me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  >
-                    Edit{" "}
-                  </div>
-                  <div
-                    onClick={()=>handleDeleteProduct(product.id)}
-                    className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg  px-2 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-                  >
-                    Delete{" "}
+                        {product.deleted ? (
+                          <div>deleted</div>
+                        ) : (
+                          <div className="mt-1 text-base text-gray-500">
+                            $ {product.price}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+
+                  <div className="flex justify-between mt-2 ">
+                    <div
+                      onClick={() => handleEditProduct(product.id)}
+                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg px-2  me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    >
+                      Edit{" "}
+                    </div>
+                    <div
+                      onClick={() => handleDeleteProduct(product.id)}
+                      className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg  px-2 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                    >
+                      Delete{" "}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
