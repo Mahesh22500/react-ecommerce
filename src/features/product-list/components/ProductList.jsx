@@ -110,7 +110,7 @@ export const Products = ({ page, allProducts }) => {
                         <div className="mt-4">
                           <div>
 
-                            <h3 className="text-sm text-gray-700 border border-gray-200 border-2 truncate">
+                            <h3 className="text-sm text-gray-700 border border-gray-100 border-2 truncate">
                               <span
                                 aria-hidden="true"
                                 className="absolute inset-0"

@@ -75,9 +75,9 @@ const router = createBrowserRouter([
   {
     path: "/product-detail/:id",
     element: (
-      <Protected>
+      
         <ProductDetailPage></ProductDetailPage>
-      </Protected>
+      
     ),
   },
   {

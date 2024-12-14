@@ -43,6 +43,14 @@ export default function ProductDetail() {
   const handleAddToCart = (e) => {
     e.preventDefault();
 
+    if(!user)
+    {
+
+      alert("You are not logged in. Please login to continue!")
+      return;
+    }
+
+
     if (items.find((item) => item.product.id == product.id)) {
       alert("Product already added to cart");
       return;
